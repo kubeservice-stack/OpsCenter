@@ -1,0 +1,38 @@
+# Observability-stack
+
+Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括 
+
+> 基于`Prometheus`的`metrics`监控和报警
+
+> 基于`Loki`的异构`logging` 监控、报警 和 搜索
+
+> 基于`Tempo`的 `tracing` 的计算、报警 和 查询 
+
+## 设计技术
+
+1. [kube-prometheus stack](https://github.com/prometheus-operator/kube-prometheus)
+2. [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator)
+3. [Grafana](http://grafana.com/) 
+4. [Loki](https://github.com/grafana/loki)
+5. [Promtail](https://grafana.com/docs/loki/latest/clients/promtail/)
+6. [Tempo](https://github.com/grafana/tempo)
+7. [Opentelemetry](https://opentelemetry.io/)
+
+## 要求
+
+- Kubernetes 1.16+
+- Helm 3+
+
+## 集群内部署
+
+### metrics 部署
+
+```bash
+$ cd kubeservice-stack/OpsCenter/metrics/
+$ kubectl create ns monitoring
+$ helm install prometheus . --namespace monitoring
+```
+
+## 集群外部署
+
+TODO

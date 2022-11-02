@@ -1,0 +1,261 @@
+# -- Overrides the chart's name
+nameOverride: ""
+
+# -- Overrides the chart's computed fullname
+fullnameOverride: ""
+
+replicas: 2
+tempo:
+  repository: dongjiang1989/tempo
+  tag: 1.5.0
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+  updateStrategy: RollingUpdate
+  resources: {}
+  #  requests:
+  #    cpu: 1000m
+  #    memory: 4Gi
+  #  limits:
+  #    cpu: 2000m
+  #    memory: 6Gi
+
+  memBallastSizeMbs: 1024
+  multitenancyEnabled: true
+  # -- If true, enables Tempo's native search
+  searchEnabled: true
+  metricsGenerator:
+    # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
+    enabled: false
+    remoteWriteUrl: "http://prometheus.monitoring:9090/api/v1/write"
+  # -- Configuration options for the ingester
+  ingester: 
+    trace_idle_period: 10s               # the length of time after a trace has not received spans to consider it complete and flush it
+    max_block_bytes: 100_000_000           # cut the head block when it hits this size or ...
+    max_block_duration: 5m               #   this much time passes
+  # -- Configuration options for the querier
+  querier:   
+    frontend_worker:
+      frontend_address: 127.0.0.1:29095
+  # -- Configuration options for the query-fronted
+  queryFrontend: {}
+  retention: 24h
+  # Global overrides
+  global_overrides:
+    per_tenant_override_config: /conf/overrides.yaml
+  overrides: {}
+
+  # Tempo server configuration
+  # Refers to https://grafana.com/docs/tempo/latest/configuration/#server
+  server:
+    http_listen_port: 3100
+    graceful_shutdown_timeout: 30s
+    grpc_server_max_concurrent_streams: 1000
+    grpc_server_max_recv_msg_size: 1.048576e+10
+    grpc_server_max_send_msg_size: 1.048576e+10
+    grpc_listen_port: 29095
+    http_listen_address: 0.0.0.0
+    grpc_listen_address: 0.0.0.0
+    http_server_idle_timeout: 120s
+    http_server_write_timeout: 6m
+    log_level: error
+
+  storage:
+    trace:
+      # tempo storage backend
+      # refer https://github.com/grafana/tempo/tree/master/docs/tempo/website/configuration
+      ## Use s3 for example
+      # backend: s3
+      # store traces in s3
+      # s3:
+      #   bucket: tempo                                   # store traces in this bucket
+      #   endpoint: s3.dualstack.us-east-2.amazonaws.com  # api endpoint
+      #   access_key: ...                                 # optional. access key when using static credentials.
+      #   secret_key: ...                                 # optional. secret key when using static credentials.
+      #   insecure: false                                 # optional. enable if endpoint is http
+      backend: s3                        # backend configuration to use
+      block:
+        bloom_filter_false_positive: .05 # bloom filter false positive rate.  lower values create larger filters but fewer false positives
+        index_downsample_bytes: 1000     # number of bytes per index record
+        encoding: zstd                   # block encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd, s2
+      wal:
+        path: /var/tempo/wal            # where to store the the wal locally
+        encoding: snappy                 # wal encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd, s2
+      s3:
+        bucket: dongjiang-test-tempo               # how to store data in s3
+        endpoint: eos-zhengzhou-1-internal.cmecloud.cn
+        region: eos-zhengzhou-1
+        access_key: 16OOFFC1SACJXDBYAPN0
+        secret_key: IHCc6jUfysnKYdyyCQf5iDM1lxUMmJ4pA58rHMof
+        insecure: false
+        forcepathstyle: false
+        hedge_requests_at: 500ms
+      pool:
+        max_workers: 1000                 # worker pool determines the number of parallel requests to the object store backend
+        queue_depth: 100000
+  # this configuration will listen on all ports and protocols that tempo is capable of.
+  # the receives all come from the OpenTelemetry collector.  more configuration information can
+  # be found there: https://github.com/open-telemetry/opentelemetry-collector/tree/master/receiver
+  receivers:
+    jaeger:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:14250
+        thrift_binary:
+          endpoint: 0.0.0.0:6832
+        thrift_compact:
+          endpoint: 0.0.0.0:6831
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    opencensus:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: "0.0.0.0:4317"
+        http:
+          endpoint: "0.0.0.0:4318"
+  securityContext: {}
+    # allowPrivilegeEscalation: false
+    #  capabilities:
+    #    drop:
+    #    - ALL
+    # readOnlyRootFilesystem: true
+  ## Additional container arguments
+  extraArgs: {}
+  # -- Environment variables to add
+  extraEnv: []
+  # -- Volume mounts to add
+  extraVolumeMounts: []
+  # - name: extra-volume
+  #   mountPath: /mnt/volume
+  #   readOnly: true
+  #   existingClaim: volume-claim
+
+# -- Tempo configuration file contents
+# @default -- Dynamically generated tempo configmap
+config: |
+    multitenancy_enabled: {{ .Values.tempo.multitenancyEnabled }}
+    search_enabled: {{ .Values.tempo.searchEnabled }}
+    metrics_generator_enabled: {{ .Values.tempo.metricsGenerator.enabled }}
+    compactor:
+      compaction:
+        compacted_block_retention: {{ .Values.tempo.retention }}
+    distributor:
+      receivers:
+        {{- toYaml .Values.tempo.receivers | nindent 8 }}
+    ingester:
+      {{- toYaml .Values.tempo.ingester | nindent 6 }}
+    server:
+      {{- toYaml .Values.tempo.server | nindent 6 }}
+    storage:
+      {{- toYaml .Values.tempo.storage | nindent 6 }}
+    querier:
+      {{- toYaml .Values.tempo.querier | nindent 6 }}
+    query_frontend:
+      {{- toYaml .Values.tempo.queryFrontend | nindent 6 }}
+    overrides:
+      {{- toYaml .Values.tempo.global_overrides | nindent 6 }}
+      {{- if .Values.tempo.metricsGenerator.enabled }}
+          metrics_generator_processors:
+          - 'service-graphs'
+          - 'span-metrics'
+    metrics_generator:
+          storage:
+            path: "/tmp/tempo"
+            remote_write:
+              - url: {{ .Values.tempo.metricsGenerator.remoteWriteUrl }}
+      {{- end }}
+
+tempoQuery:
+  repository: dongjiang1989/tempo-query
+  tag: 1.5.0
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+  # -- if False the tempo-query container is not deployed
+  enabled: true
+  ## Additional container arguments
+  extraArgs: {}
+  # -- Environment variables to add
+  extraEnv: []
+  # -- Volume mounts to add
+  extraVolumeMounts: []
+  # - name: extra-volume
+  #   mountPath: /mnt/volume
+  #   readOnly: true
+  #   existingClaim: volume-claim
+  securityContext: {}
+    # allowPrivilegeEscalation: false
+    #  capabilities:
+    #    drop:
+    #    - ALL
+    # readOnlyRootFilesystem: false # fails if true, do not enable
+
+# -- securityContext for container
+securityContext: {}
+  # runAsUser: 65532
+  # runAsGroup: 65532
+  # fsGroup: 65532
+  # runAsNonRoot: true
+
+serviceAccount:
+  # -- Specifies whether a ServiceAccount should be created
+  create: true
+  # -- The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: null
+  # -- Image pull secrets for the service account
+  imagePullSecrets: []
+  # -- Annotations for the service account
+  annotations: {}
+  automountServiceAccountToken: true
+
+service:
+  type: ClusterIP
+  annotations: {}
+  labels: {}
+
+serviceMonitor:
+  enabled: true
+  interval: ""
+  additionalLabels: {}
+  annotations: {}
+  # scrapeTimeout: 10s
+
+persistence:
+  enabled: false
+  # storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+# -- Pod Annotations
+podAnnotations: {}
+
+# -- Pod (extra) Labels
+podLabels: {}
+
+# -- Volumes to add
+extraVolumes: []
+
+# -- Node labels for pod assignment. See: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: {}
+
+# -- Tolerations for pod assignment. See: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+# -- Affinity for pod assignment. See: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+# -- The name of the PriorityClass
+priorityClassName: null

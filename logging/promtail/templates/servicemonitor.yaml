@@ -12,11 +12,13 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
+    release: metrics
     {{- include "promtail.labels" $ | nindent 4 }}
     {{- with .labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  jobLabel: jobLabel
   {{- with .namespaceSelector }}
   namespaceSelector:
   {{- toYaml . | nindent 4 }}

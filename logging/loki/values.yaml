@@ -113,8 +113,8 @@ config:
   limits_config:
     cardinality_limit: 100000
     enforce_metric_name: false
-    ingestion_burst_size_mb: 640
-    ingestion_rate_mb: 320
+    ingestion_burst_size_mb: 6400
+    ingestion_rate_mb: 3200
     ingestion_rate_strategy: local
     max_concurrent_tail_requests: 15
     max_global_streams_per_user: 0
@@ -277,7 +277,7 @@ readinessProbe:
     port: http-metrics
   initialDelaySeconds: 45
 
-replicas: 1
+replicas: 2
 
 resources: 
   requests:

@@ -93,6 +93,6 @@ Common labels
 {{- define "loki.labels" -}}
 app: {{ template "loki.name" . }}
 chart: {{ template "loki.chart" . }}
-release: {{ .Release.Name }}
+release: metrics
 heritage: {{ .Release.Service }}
 {{- end }}

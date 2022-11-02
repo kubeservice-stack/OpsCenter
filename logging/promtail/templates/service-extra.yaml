@@ -10,8 +10,9 @@ metadata:
     {{- with .labels }}
     {{- toYaml $ | nindent 4 }}
     {{- end }}
-  {{- with .annotations }}
   annotations:
+    prometheus.io/scrape: "true"
+  {{- with .annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:

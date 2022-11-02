@@ -6,6 +6,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "promtail.labels" . | nindent 4 }}
+    jobLabel: promtail
+  annotations:
+    prometheus.io/scrape: "true"
 spec:
   clusterIP: None
   ports:

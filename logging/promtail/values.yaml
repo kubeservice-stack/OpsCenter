@@ -22,7 +22,7 @@ deployment:
 
 configmap:
   # -- If enabled, promtail config will be created as a ConfigMap instead of a secret
-  enabled: false
+  enabled: true
 
 initContainer: []
   # # -- Specifies whether the init container for setting inotify max user instances is to be enabled
@@ -63,8 +63,8 @@ podLabels: {}
 
 # -- Pod annotations
 podAnnotations:
-#  prometheus.io/scrape: "true"
-#  prometheus.io/port: "http-metrics"
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "http-metrics"
 
 # -- The name of the PriorityClass
 priorityClassName: null
@@ -151,6 +151,9 @@ defaultVolumes:
   - name: pods
     hostPath:
       path: /var/log/pods
+  - name: journal
+    hostPath:
+      path: /var/log/journal
 
 # -- Default volume mounts. Corresponds to `volumes`.
 # @default -- See `values.yaml`
@@ -162,6 +165,9 @@ defaultVolumeMounts:
     readOnly: true
   - name: pods
     mountPath: /var/log/pods
+    readOnly: true
+  - name: journal
+    mountPath: /var/log/journal
     readOnly: true
 
 # Extra volumes to be added in addition to those specified under `defaultVolumes`.
@@ -197,7 +203,7 @@ serviceMonitor:
   # -- ServiceMonitor scrape interval
   interval: null
   # -- ServiceMonitor scrape timeout in Go duration format (e.g. 15s)
-  scrapeTimeout: null
+  scrapeTimeout: 10s
   # -- ServiceMonitor relabel configs to apply to samples before scraping
   # https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
   # (defines `relabel_configs`)
@@ -276,7 +282,7 @@ config:
   # -- The log level of the Promtail server
   # Must be reference in `config.file` to configure `server.log_level`
   # See default config in `values.yaml`
-  logLevel: debug
+  logLevel: info
   # -- The port of the Promtail server
   # Must be reference in `config.file` to configure `server.http_listen_port`
   # See default config in `values.yaml`
@@ -350,7 +356,17 @@ config:
 
     # -- You can put here any additional scrape configs you want to add to the config file.
     # @default -- empty
-    extraScrapeConfigs: ""
+    extraScrapeConfigs: |
+      - job_name: journal
+        journal:
+          max_age: 12h
+          json: false
+          path: /var/log/journal
+          labels:
+            job: systemd-journal
+        relabel_configs:
+          - source_labels: ['__journal__systemd_unit']
+            target_label: 'unit'
 
     # -- You can put here any additional relabel_configs to "kubernetes-pods" job
     extraRelabelConfigs: []

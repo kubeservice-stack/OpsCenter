@@ -72,3 +72,12 @@ data:
         httpHeaderName1: "X-Scope-OrgID"
       secureJsonData:
         httpHeaderValue1: "fake"
+    - name: tempo
+      type: tempo
+      access: proxy
+      url: http://tempo.monitoring:3100
+      editable: false
+      jsonData:
+        httpHeaderName1: "X-Scope-OrgID"
+      secureJsonData:
+        httpHeaderValue1: "fake"

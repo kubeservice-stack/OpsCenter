@@ -58,6 +58,18 @@ $ helm upgrade promtail . --namespace monitoring  ## 更新配置
 $ helm uninstall promtail . --namespace monitoring  ## 卸载
 ```
 
+### tracing 部署
+
+```bash
+$ cd kubeservice-stack/OpsCenter/tracing/
+
+$ cd tempo
+$ vim value.yaml #编辑环境配置
+$ helm install tempo . --namespace monitoring  ## 部署
+$ helm upgrade tempo . --namespace monitoring  ## 更新配置
+$ helm uninstall tempo . --namespace monitoring  ## 卸载
+```
+
 ## 集群外部署
 
 TODO

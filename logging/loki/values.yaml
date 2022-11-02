@@ -1,0 +1,432 @@
+image:
+  repository: dongjiang1989/loki
+  tag: 2.6.1
+  pullPolicy: IfNotPresent
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+ingress:
+  enabled: false
+  # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+  # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+  # ingressClassName: nginx
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+## Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+# podAntiAffinity:
+#   requiredDuringSchedulingIgnoredDuringExecution:
+#   - labelSelector:
+#       matchExpressions:
+#       - key: app
+#         operator: In
+#         values:
+#         - loki
+#     topologyKey: "kubernetes.io/hostname"
+
+## StatefulSet annotations
+annotations: {}
+
+# enable tracing for debug, need install jaeger and specify right jaeger_agent_host
+tracing:
+  enabled: false
+  jaegerAgentHost:
+
+config:
+  # existingSecret:
+  auth_enabled: true
+
+  memberlist:
+    randomize_node_name: true
+    stream_timeout: 120s
+    retransmit_factor: 4
+    pull_push_interval: 60s
+    gossip_interval: 200ms
+    gossip_nodes: 0
+    gossip_to_dead_nodes_time: 60s
+    dead_node_reclaim_time: 0s
+    compression_enabled: true
+    bind_addr: ['0.0.0.0']
+    bind_port: 7946
+    join_members:
+      # the value must be defined as string to be evaluated when secret manifest is being generating
+      - '{{ include "loki.fullname" . }}-memberlist'
+      - '127.0.0.1:7946'
+
+  ingester:
+    chunk_block_size: 262144
+    chunk_encoding: snappy
+    chunk_idle_period: 15m
+    chunk_retain_period: 6m
+    chunk_target_size: 1.572864e+06
+    flush_op_timeout: 30s
+    lifecycler:
+        heartbeat_period: 10s
+        interface_names:
+          - eth0
+          - en0
+        join_after: 30s
+        num_tokens: 512
+        ring:
+            heartbeat_timeout: 10m
+            kvstore:
+                store: memberlist
+                prefix: "collectors/"
+            replication_factor: 1
+    max_transfer_retries: 0
+    sync_min_utilization: 0.2
+    sync_period: 15m
+    wal:
+        dir: /data/loki/wal
+        enabled: true
+        replay_memory_ceiling: 1GB
+
+  distributor:
+    ring:
+        kvstore:
+            store: memberlist
+            prefix: "collectors/"
+      ## Different ring configs can be used. E.g. Consul
+      # ring:
+      #   store: consul
+      #   replication_factor: 1
+      #   consul:
+      #     host: "consul:8500"
+      #     prefix: ""
+      #     http_client_timeout: "20s"
+      #     consistent_reads: true
+  limits_config:
+    cardinality_limit: 100000
+    enforce_metric_name: false
+    ingestion_burst_size_mb: 640
+    ingestion_rate_mb: 320
+    ingestion_rate_strategy: local
+    max_concurrent_tail_requests: 15
+    max_global_streams_per_user: 0
+    max_label_name_length: 10240
+    max_label_names_per_series: 150
+    max_label_value_length: 20480
+    max_line_size: 65536
+    max_query_length: 1416h
+    max_query_lookback: 1440h
+    max_query_parallelism: 32
+    max_entries_limit_per_query: 5000
+    max_streams_matchers_per_query: 1000
+    max_streams_per_user: 100000
+    max_cache_freshness_per_query: 5m
+    reject_old_samples: true
+    reject_old_samples_max_age: 168h
+    split_queries_by_interval: 15m
+  schema_config:
+    configs:
+      - from: "2022-11-01"
+        index:
+            period: 24h
+            prefix: loki_boltdb_shipper_index_
+        chunks:
+            period: 24h
+            prefix: loki_boltdb_shipper_chunks_
+        object_store: s3
+        schema: v11
+        store: boltdb-shipper
+  server:
+    graceful_shutdown_timeout: 30s
+    grpc_server_max_concurrent_streams: 1000
+    grpc_server_max_recv_msg_size: 1.048576e+10
+    grpc_server_max_send_msg_size: 1.048576e+10
+    grpc_listen_port: 9095
+    http_listen_port: 3100
+    http_listen_address: 0.0.0.0
+    grpc_listen_address: 0.0.0.0
+    http_server_idle_timeout: 120s
+    http_server_write_timeout: 6m
+    log_level: warn
+  storage_config:
+    boltdb_shipper:
+        active_index_directory: /data/www/data/loki/index
+        cache_location: /data/www/cache/loki/boltdb-cache
+        shared_store: s3
+        cache_ttl: 24h
+    aws:
+        bucketnames: dongjiang-test-loki
+        endpoint: eos-zhengzhou-1-internal.cmecloud.cn
+        region: eos-zhengzhou-1
+        access_key_id: 16OOFFC1SACJXDBYAPN0
+        secret_access_key: IHCc6jUfysnKYdyyCQf5iDM1lxUMmJ4pA58rHMof
+        insecure: true
+        sse_encryption: false
+        http_config:
+            idle_conn_timeout: 90s
+            response_header_timeout: 0s
+            insecure_skip_verify: false
+        s3forcepathstyle: false
+    index_queries_cache_config:
+        enable_fifocache: true
+        fifocache:
+            max_size_bytes: 1GB
+            max_size_items: 0
+            validity: 0s
+  chunk_store_config:
+    chunk_cache_config:
+        enable_fifocache: true
+        fifocache:
+            max_size_bytes: 1GB
+            max_size_items: 0
+            validity: 0s  
+  table_manager:
+    creation_grace_period: 3h
+    poll_interval: 10m
+    retention_deletes_enabled: false
+    retention_period: 0
+  compactor:
+    compaction_interval: 1m
+    retention_delete_worker_count: 500
+    retention_enabled: true
+    shared_store: s3
+    working_directory: /data/loki/boltdb-shipper-compactor
+# Needed for Alerting: https://grafana.com/docs/loki/latest/rules/
+# This is just a simple example, for more details: https://grafana.com/docs/loki/latest/configuration/#ruler_config
+#  ruler:
+#    storage:
+#      type: local
+#      local:
+#        directory: /rules
+#    rule_path: /tmp/scratch
+#    alertmanager_url: http://alertmanager.svc.namespace:9093
+#    ring:
+#      kvstore:
+#        store: inmemory
+#    enable_api: true
+
+## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+extraArgs: {}
+  # log.level: debug
+
+extraEnvFrom: []
+
+livenessProbe:
+  httpGet:
+    path: /ready
+    port: http-metrics
+  initialDelaySeconds: 45
+
+## ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+networkPolicy:
+  enabled: false
+
+## The app name of loki clients
+client: {}
+  # name:
+
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+## If you set enabled as "True", you need :
+## - create a pv which above 10Gi and has same namespace with loki
+## - keep storageClassName same with below setting
+persistence:
+  enabled: false
+  accessModes:
+  - ReadWriteOnce
+  size: 10Gi
+  labels: {}
+  annotations: {}
+  # selector:
+  #   matchLabels:
+  #     app.kubernetes.io/name: loki
+  # subPath: ""
+  # existingClaim:
+  # storageClassName:
+
+## Pod Labels
+podLabels: {}
+
+## Pod Annotations
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "http-metrics"
+
+podManagementPolicy: OrderedReady
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName:
+
+rbac:
+  create: true
+  pspEnabled: true
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: http-metrics
+  initialDelaySeconds: 45
+
+replicas: 1
+
+resources: 
+  requests:
+    cpu: 100m
+    memory: 1Gi
+
+securityContext:
+  fsGroup: 10001
+  runAsGroup: 10001
+  runAsNonRoot: true
+  runAsUser: 10001
+
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+
+service:
+  type: ClusterIP
+  nodePort:
+  port: 3100
+  annotations: {}
+  labels: {}
+  targetPort: http-metrics
+
+serviceAccount:
+  create: true
+  name:
+  annotations: {}
+  automountServiceAccountToken: true
+
+terminationGracePeriodSeconds: 4800
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+## Topology spread constraint for multi-zone clusters
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+topologySpreadConstraints:
+  enabled: false
+
+# The values to set in the PodDisruptionBudget spec
+# If not set then a PodDisruptionBudget will not be created
+podDisruptionBudget: {}
+# minAvailable: 1
+# maxUnavailable: 1
+
+updateStrategy:
+  type: RollingUpdate
+
+serviceMonitor:
+  enabled: true
+  interval: ""
+  additionalLabels: {}
+  annotations: {}
+  # scrapeTimeout: 10s
+  # path: /metrics
+  scheme: null
+  tlsConfig: {}
+  prometheusRule:
+    enabled: false
+    additionalLabels: {}
+  #  namespace:
+    rules:
+    #  Some examples from https://awesome-prometheus-alerts.grep.to/rules.html#loki
+      - alert: LokiProcessTooManyRestarts
+        expr: changes(process_start_time_seconds{job=~"loki"}[15m]) > 2
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Loki process too many restarts (instance {{ $labels.instance }})
+          description: "A loki process had too many restarts (target {{ $labels.instance }})\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      - alert: LokiRequestErrors
+        expr: 100 * sum(rate(loki_request_duration_seconds_count{status_code=~"5.."}[1m])) by (namespace, job, route) / sum(rate(loki_request_duration_seconds_count[1m])) by (namespace, job, route) > 10
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: Loki request errors (instance {{ $labels.instance }})
+          description: "The {{ $labels.job }} and {{ $labels.route }} are experiencing errors\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      - alert: LokiRequestPanic
+        expr: sum(increase(loki_panic_total[10m])) by (namespace, job) > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Loki request panic (instance {{ $labels.instance }})
+          description: "The {{ $labels.job }} is experiencing {{ printf \"%.2f\" $value }}% increase of panics\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      - alert: LokiRequestLatency
+        expr: (histogram_quantile(0.99, sum(rate(loki_request_duration_seconds_bucket{route!~"(?i).*tail.*"}[5m])) by (le)))  > 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Loki request latency (instance {{ $labels.instance }})
+          description: "The {{ $labels.job }} {{ $labels.route }} is experiencing {{ printf \"%.2f\" $value }}s 99th percentile latency\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+
+initContainers: []
+## Init containers to be added to the loki pod.
+# - name: my-init-container
+#   image: busybox:latest
+#   command: ['sh', '-c', 'echo hello']
+
+extraContainers: []
+## Additional containers to be added to the loki pod.
+# - name: reverse-proxy
+#   image: angelbarrera92/basic-auth-reverse-proxy:dev
+#   args:
+#     - "serve"
+#     - "--upstream=http://localhost:3100"
+#     - "--auth-config=/etc/reverse-proxy-conf/authn.yaml"
+#   ports:
+#     - name: http
+#       containerPort: 11811
+#       protocol: TCP
+#   volumeMounts:
+#     - name: reverse-proxy-auth-config
+#       mountPath: /etc/reverse-proxy-conf
+
+
+extraVolumes: []
+## Additional volumes to the loki pod.
+# - name: reverse-proxy-auth-config
+#   secret:
+#     secretName: reverse-proxy-auth-config
+
+## Extra volume mounts that will be added to the loki container
+extraVolumeMounts: []
+
+extraPorts: []
+## Additional ports to the loki services. Useful to expose extra container ports.
+# - port: 11811
+#   protocol: TCP
+#   name: http
+#   targetPort: http
+
+# Extra env variables to pass to the loki container
+env: []
+
+# Specify Loki Alerting rules based on this documentation: https://grafana.com/docs/loki/latest/rules/
+# When specified, you also need to add a ruler config section above. An example is shown in the rules docs.
+alerting_groups: []
+#  - name: example
+#    rules:
+#    - alert: HighThroughputLogStreams
+#      expr: sum by(container) (rate({job=~"loki-dev/.*"}[1m])) > 1000
+#      for: 2m
+
+useExistingAlertingGroup:
+  enabled: false
+  configmapName: ""

@@ -1525,6 +1525,14 @@ kube-state-metrics:
 
   selfMonitor:
     enabled: false
+    
+## pingmeshExporter
+pingmeshExporter:
+  enabled: true
+      
+## snmpExporter
+snmpExporter:
+  enabled: true
 
 ## Deploy node exporter as a daemonset to all nodes
 ##

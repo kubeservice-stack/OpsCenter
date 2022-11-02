@@ -61,3 +61,14 @@ data:
 {{ tpl (toYaml .Values.grafana.additionalDataSources | indent 4) . }}
 {{- end }}
 {{- end }}
+    - name: loki
+      type: loki
+      access: proxy
+      url: http://loki.monitoring:3100
+      editable: false
+      jsonData:
+        maxLines : 5000
+        manageAlerts: true
+        httpHeaderName1: "X-Scope-OrgID"
+      secureJsonData:
+        httpHeaderValue1: "fake"

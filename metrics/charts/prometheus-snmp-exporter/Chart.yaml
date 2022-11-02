@@ -1,0 +1,15 @@
+apiVersion: v1
+appVersion: 0.19.0
+description: Prometheus SNMP Exporter
+home: https://github.com/prometheus/snmp_exporter
+keywords:
+- prometheus
+- snmp
+- monitoring
+maintainers:
+- email: maxime@root314.com
+  name: miouge1
+name: prometheus-snmp-exporter
+sources:
+- https://github.com/prometheus/snmp_exporter
+version: 1.2.1

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-hotrod
+  name: example-hotrod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opentracing-demo
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: opentracing-demo
+    spec:
+      containers:
+      - image: jaegertracing/example-hotrod:latest
+        name: opentracing-demo
+        args: ["all"]
+        env:
+          - name: JAEGER_AGENT_HOST
+            value: tempo.monitoring
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+        ports:
+          - containerPort: 8080
+            name: frontend
+          - containerPort: 8081
+            name: customer
+          - containerPort: 8083
+            name: route
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100M
+          requests:
+            cpu: 100m
+            memory: 100M

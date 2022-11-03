@@ -70,6 +70,11 @@ data:
         maxLines : 5000
         manageAlerts: true
         httpHeaderName1: "X-Scope-OrgID"
+        derivedFields:
+          - name: "trace_id"
+            matcherRegex: '.trace_id": "(.+?)"\, "'
+            url: "$${__value.raw}"
+            datasourceUid: tempo
       secureJsonData:
         httpHeaderValue1: "fake"
     - name: tempo
@@ -78,6 +83,12 @@ data:
       url: http://tempo.monitoring:3100
       editable: false
       jsonData:
-        httpHeaderName1: "X-Scope-OrgID"
-      secureJsonData:
-        httpHeaderValue1: "fake"
+        httpMethod: "GET"
+        nodeGraph:
+          enabled: true
+        search:
+          hide: false
+        serviceMap:
+          datasourceUid: "Prometheus"
+        tracesToLogs:
+          datasourceUid: "loki"

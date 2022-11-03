@@ -26,7 +26,7 @@ tempo:
   #    memory: 6Gi
 
   memBallastSizeMbs: 1024
-  multitenancyEnabled: true
+  multitenancyEnabled: false
   # -- If true, enables Tempo's native search
   searchEnabled: true
   metricsGenerator:

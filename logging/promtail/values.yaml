@@ -85,13 +85,10 @@ readinessProbe:
   timeoutSeconds: 1
 
 # -- Resource requests and limits
-resources: {}
-#  limits:
-#    cpu: 200m
-#    memory: 128Mi
-#  requests:
-#    cpu: 100m
-#    memory: 128Mi
+resources: 
+  limits:
+    cpu: 512m
+    memory: 512Mi
 
 # -- The security context for pods
 podSecurityContext:
@@ -171,13 +168,19 @@ defaultVolumeMounts:
     readOnly: true
 
 # Extra volumes to be added in addition to those specified under `defaultVolumes`.
-extraVolumes: []
+extraVolumes:
+  - name: host-time
+    hostPath:
+      path: /etc/localtime
 
 # Extra volume mounts together. Corresponds to `extraVolumes`.
-extraVolumeMounts: []
+extraVolumeMounts: 
+  - name: host-time
+    mountPath: /etc/localtime
 
 # Extra args for the Promtail container.
-extraArgs: []
+extraArgs:
+  - -client.external-labels=cluster=dev
 # -- Example:
 # -- extraArgs:
 # --   - -client.external-labels=hostname=$(HOSTNAME)

@@ -37,7 +37,7 @@ $ helm install metrics . --namespace monitoring  ## 部署
 
 $ helm upgrade metrics . --namespace monitoring  ## 更新配置
 
-$ helm uninstall metrics . --namespace monitoring  ## 卸载
+$ helm uninstall metrics --namespace monitoring  ## 卸载
 ```
 
 ### logging 部署
@@ -49,13 +49,13 @@ $ cd loki
 $ vim value.yaml #编辑环境配置
 $ helm install loki . --namespace monitoring  ## 部署
 $ helm upgrade loki . --namespace monitoring  ## 更新配置
-$ helm uninstall loki . --namespace monitoring  ## 卸载
+$ helm uninstall loki --namespace monitoring  ## 卸载
 
 $ cd promtail
 $ vim value.yaml #编辑环境配置
 $ helm install promtail . --namespace monitoring  ## 部署
 $ helm upgrade promtail . --namespace monitoring  ## 更新配置
-$ helm uninstall promtail . --namespace monitoring  ## 卸载
+$ helm uninstall promtail --namespace monitoring  ## 卸载
 ```
 
 ### tracing 部署
@@ -73,3 +73,8 @@ $ helm uninstall tempo . --namespace monitoring  ## 卸载
 ## 集群外部署
 
 TODO
+
+## 效果演示
+
+![Opscenter Demo](opscenter.gif)
+

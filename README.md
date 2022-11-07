@@ -76,5 +76,5 @@ TODO
 
 ## 效果演示
 
-![Opscenter Demo](opscenter.gif)
+![Opscenter Demo](kubeservice-stack/OpsCenter/opscenter.gif)
 

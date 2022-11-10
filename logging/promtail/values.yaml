@@ -370,7 +370,46 @@ config:
         relabel_configs:
           - source_labels: ['__journal__systemd_unit']
             target_label: 'unit'
-
+      - job_name: messages
+        journal:
+          max_age: 12h
+          json: false
+          path: /var/log/messages
+          labels:
+            job: systemd-messages
+        relabel_configs:
+          - source_labels: ['__messages__systemd_unit']
+            target_label: 'unit'
+      - job_name: kernel-error
+        journal:
+          max_age: 12h
+          json: false
+          path: /var/log/errors.log
+          labels:
+            job: systemd-kernel-error
+        relabel_configs:
+          - source_labels: ['__kernel_error__systemd_unit']
+            target_label: 'unit'
+      - job_name: yum
+        journal:
+          max_age: 12h
+          json: false
+          path: /var/log/yum.log
+          labels:
+            job: systemd-yum
+        relabel_configs:
+          - source_labels: ['__yum__systemd_unit']
+            target_label: 'unit'
+      - job_name: cron
+        journal:
+          max_age: 12h
+          json: false
+          path: /var/log/cron
+          labels:
+            job: systemd-cron
+        relabel_configs:
+          - source_labels: ['__cron__systemd_unit']
+            target_label: 'unit'
     # -- You can put here any additional relabel_configs to "kubernetes-pods" job
     extraRelabelConfigs: []
 

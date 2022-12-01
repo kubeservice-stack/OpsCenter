@@ -18,6 +18,24 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 6. [Tempo](https://github.com/grafana/tempo)
 7. [Opentelemetry](https://opentelemetry.io/)
 
+## 设计文档
+
+整体设计文档： [https://kubeservice.cn/2022/11/07/devops-k8s-observability-stack/](https://kubeservice.cn/2022/11/07/devops-k8s-observability-stack/)
+
+监控体系设计： 
+
+- Pingmesh: [https://kubeservice.cn/2022/10/21/devops-k8s-pingmesh/](https://kubeservice.cn/2022/10/21/devops-k8s-pingmesh/)
+- Monitoring: [https://kubeservice.cn/2022/10/20/devops-k8s-prometheus/](https://kubeservice.cn/2022/10/20/devops-k8s-prometheus/)
+
+日志体系设计：
+
+- kube-event: 
+- Loki：[https://kubeservice.cn/2022/11/02/devops-k8s-logging/](https://kubeservice.cn/2022/11/02/devops-k8s-logging/)
+
+调用链设计：
+
+- Open Telemetry: 
+
 ## 要求
 
 - Kubernetes 1.16+

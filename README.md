@@ -8,6 +8,7 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 
 > 基于`Tempo`的 `tracing` 的计算、报警 和 查询 
 
+
 ## 设计技术
 
 1. [kube-prometheus stack](https://github.com/prometheus-operator/kube-prometheus)

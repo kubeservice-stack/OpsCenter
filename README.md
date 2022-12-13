@@ -58,6 +58,13 @@ $ helm upgrade metrics . --namespace monitoring  ## 更新配置
 $ helm uninstall metrics --namespace monitoring  ## 卸载
 ```
 
+或者 通过`helm template` 方式部署
+
+```bash
+$ helm template metrics . --namespace monitoring >> metrics-allinone.yaml
+$ kubectl apply -f metrics-allinone.yaml
+```
+
 ### logging 部署
 
 ```bash
@@ -76,6 +83,16 @@ $ helm upgrade promtail . --namespace monitoring  ## 更新配置
 $ helm uninstall promtail --namespace monitoring  ## 卸载
 ```
 
+或者 通过`helm template` 方式部署
+
+```bash
+$ helm template loki . --namespace monitoring >> loki-allinone.yaml
+$ kubectl apply -f loki-allinone.yaml
+
+$ helm template promtail . --namespace monitoring >> promtail-allinone.yaml
+$ kubectl apply -f promtail-allinone.yaml
+```
+
 ### tracing 部署
 
 ```bash
@@ -86,6 +103,14 @@ $ vim value.yaml #编辑环境配置
 $ helm install tempo . --namespace monitoring  ## 部署
 $ helm upgrade tempo . --namespace monitoring  ## 更新配置
 $ helm uninstall tempo . --namespace monitoring  ## 卸载
+```
+
+
+或者 通过`helm template` 方式部署
+
+```bash
+$ helm template tempo . --namespace monitoring >> tempo-allinone.yaml
+$ kubectl apply -f tempo-allinone.yaml
 ```
 
 ## 集群外部署

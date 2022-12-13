@@ -1,5 +1,7 @@
 # Observability-stack
 
+[![Lint and Test Charts](https://github.com/kubeservice-stack/OpsCenter/actions/workflows/lint.yml/badge.svg)](https://github.com/kubeservice-stack/OpsCenter/actions/workflows/lint.yml)
+
 Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括 
 
 > 基于`Prometheus`的`metrics`监控和报警

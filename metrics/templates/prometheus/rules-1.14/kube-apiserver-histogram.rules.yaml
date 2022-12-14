@@ -22,7 +22,7 @@ metadata:
 {{- end }}
 spec:
   groups:
-  - name: kube-apiserver-histogram.rules
+  - name: kube-apiserver-histogram.common.rules
     rules:
     - expr: histogram_quantile(0.99, sum by (cluster, le, resource) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[5m]))) > 0
       labels:
@@ -34,7 +34,7 @@ spec:
         quantile: '0.99'
         verb: write
       record: cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile
-  - name: apiserver.rules
+  - name: kube-apiserver-histogram.request.rules
     rules:
     - expr: |
         histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket[5m])) by (resource,  subresource, verb, scope, le))
@@ -51,7 +51,7 @@ spec:
       record: apiserver:apiserver_request_latency:histogram_quantile
       labels:
         quantile: "0.50"
-  - name: kube-proxy.rules
+  - name: kube-proxy-histogram.network.rules
     rules:
     - expr: |
         histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket[5m])) by (le))
@@ -83,7 +83,7 @@ spec:
       record: kubeproxy:kubeproxy_network_programming_duration:histogram_quantile_by_pod
       labels:
         quantile: "0.50"
-  - name: apiserver.1m.rules
+  - name: kube-apiserver-histogram.1m.rules
     rules:
     - expr: |
         histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket[1m])) by (resource,  subresource, verb, scope, le))

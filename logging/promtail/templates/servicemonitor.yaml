@@ -4,9 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "promtail.fullname" $ }}
-  {{- with .namespace }}
-  namespace: {{ . }}
-  {{- end }}
+  namespace: {{ .Release.Namespace }}
   {{- with .annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

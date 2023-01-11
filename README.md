@@ -44,6 +44,10 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 - Kubernetes 1.16+
 - Helm 3+
 
+## 其他条件
+
+- kubelet、apiserver、scheduler 和 controller manager 开启metrics
+
 ## 集群内部署
 
 ### metrics 部署
@@ -52,6 +56,7 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 $ cd kubeservice-stack/OpsCenter/metrics/
 $ kubectl create ns monitoring
 
+$ kubectl apply -f ./metrics/crds/ .
 $ vim value.yaml #编辑环境配置
 
 $ helm install metrics . --namespace monitoring  ## 部署
@@ -64,7 +69,7 @@ $ helm uninstall metrics --namespace monitoring  ## 卸载
 或者 通过`helm template` 方式部署
 
 ```bash
-$ helm template metrics . --namespace monitoring >> metrics-allinone.yaml
+$ helm template metrics . --namespace monitoring > metrics-allinone.yaml
 $ kubectl apply -f metrics-allinone.yaml
 ```
 
@@ -89,10 +94,10 @@ $ helm uninstall promtail --namespace monitoring  ## 卸载
 或者 通过`helm template` 方式部署
 
 ```bash
-$ helm template loki . --namespace monitoring >> loki-allinone.yaml
+$ helm template loki . --namespace monitoring > loki-allinone.yaml
 $ kubectl apply -f loki-allinone.yaml
 
-$ helm template promtail . --namespace monitoring >> promtail-allinone.yaml
+$ helm template promtail . --namespace monitoring > promtail-allinone.yaml
 $ kubectl apply -f promtail-allinone.yaml
 ```
 
@@ -112,7 +117,7 @@ $ helm uninstall tempo . --namespace monitoring  ## 卸载
 或者 通过`helm template` 方式部署
 
 ```bash
-$ helm template tempo . --namespace monitoring >> tempo-allinone.yaml
+$ helm template tempo . --namespace monitoring > tempo-allinone.yaml
 $ kubectl apply -f tempo-allinone.yaml
 ```
 

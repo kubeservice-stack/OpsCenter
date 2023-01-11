@@ -56,6 +56,7 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 $ cd kubeservice-stack/OpsCenter/metrics/
 $ kubectl create ns monitoring
 
+$ kubectl apply -f ./metrics/crds/ .
 $ vim value.yaml #编辑环境配置
 
 $ helm install metrics . --namespace monitoring  ## 部署

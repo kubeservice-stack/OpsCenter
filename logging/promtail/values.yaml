@@ -151,7 +151,19 @@ defaultVolumes:
   - name: journal
     hostPath:
       path: /var/log/journal
-
+  - name: messages
+    hostPath:
+      path: /var/log/messages
+  - name: errors
+    hostPath:
+      path: /var/log/errors
+  - name: yum
+    hostPath:
+      path: /var/log/yum.log
+  - name: cron
+    hostPath:
+      path: /var/log/cron
+      
 # -- Default volume mounts. Corresponds to `volumes`.
 # @default -- See `values.yaml`
 defaultVolumeMounts:
@@ -166,7 +178,18 @@ defaultVolumeMounts:
   - name: journal
     mountPath: /var/log/journal
     readOnly: true
-
+  - name: messages
+    mountPath: /var/log/messages
+    readOnly: true
+  - name: yum
+    mountPath: /var/log/yum.log
+    readOnly: true
+  - name: cron
+    mountPath: /var/log/cron
+    readOnly: true
+  - name: errors
+    mountPath: /var/log/errors.log
+    readOnly: true
 # Extra volumes to be added in addition to those specified under `defaultVolumes`.
 extraVolumes:
   - name: host-time

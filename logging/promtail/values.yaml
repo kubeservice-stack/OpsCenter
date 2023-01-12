@@ -394,7 +394,7 @@ config:
           - source_labels: ['__journal__systemd_unit']
             target_label: 'unit'
       - job_name: messages
-        journal:
+        static_configs:
           max_age: 12h
           json: false
           path: /var/log/messages
@@ -404,7 +404,7 @@ config:
           - source_labels: ['__messages__systemd_unit']
             target_label: 'unit'
       - job_name: kernel-error
-        journal:
+        static_configs:
           max_age: 12h
           json: false
           path: /var/log/errors.log
@@ -414,7 +414,7 @@ config:
           - source_labels: ['__kernel_error__systemd_unit']
             target_label: 'unit'
       - job_name: yum
-        journal:
+        static_configs:
           max_age: 12h
           json: false
           path: /var/log/yum.log
@@ -424,7 +424,7 @@ config:
           - source_labels: ['__yum__systemd_unit']
             target_label: 'unit'
       - job_name: cron
-        journal:
+        static_configs:
           max_age: 12h
           json: false
           path: /var/log/cron

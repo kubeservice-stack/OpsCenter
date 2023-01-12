@@ -394,41 +394,45 @@ config:
           - source_labels: ['__journal__systemd_unit']
             target_label: 'unit'
       - job_name: messages
+        entry_parser: raw
         static_configs:
-          max_age: 12h
-          json: false
-          path: /var/log/messages
+        - targets:
+            - localhost
           labels:
+            __path__: /var/log/messages
             job: systemd-messages
         relabel_configs:
           - source_labels: ['__messages__systemd_unit']
             target_label: 'unit'
       - job_name: kernel-error
+        entry_parser: raw
         static_configs:
-          max_age: 12h
-          json: false
-          path: /var/log/errors.log
+        - targets:
+            - localhost
           labels:
+            __path__: /var/log/error.log
             job: systemd-kernel-error
         relabel_configs:
           - source_labels: ['__kernel_error__systemd_unit']
             target_label: 'unit'
       - job_name: yum
+        entry_parser: raw
         static_configs:
-          max_age: 12h
-          json: false
-          path: /var/log/yum.log
+        - targets:
+            - localhost
           labels:
+            __path__: /var/log/yum.log
             job: systemd-yum
         relabel_configs:
           - source_labels: ['__yum__systemd_unit']
             target_label: 'unit'
       - job_name: cron
+        entry_parser: raw
         static_configs:
-          max_age: 12h
-          json: false
-          path: /var/log/cron
+        - targets:
+            - localhost
           labels:
+            __path__: /var/log/cron
             job: systemd-cron
         relabel_configs:
           - source_labels: ['__cron__systemd_unit']

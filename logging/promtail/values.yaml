@@ -394,7 +394,6 @@ config:
           - source_labels: ['__journal__systemd_unit']
             target_label: 'unit'
       - job_name: messages
-        entry_parser: raw
         static_configs:
         - targets:
             - localhost
@@ -405,7 +404,6 @@ config:
           - source_labels: ['__messages__systemd_unit']
             target_label: 'unit'
       - job_name: kernel-error
-        entry_parser: raw
         static_configs:
         - targets:
             - localhost
@@ -416,7 +414,6 @@ config:
           - source_labels: ['__kernel_error__systemd_unit']
             target_label: 'unit'
       - job_name: yum
-        entry_parser: raw
         static_configs:
         - targets:
             - localhost
@@ -427,7 +424,6 @@ config:
           - source_labels: ['__yum__systemd_unit']
             target_label: 'unit'
       - job_name: cron
-        entry_parser: raw
         static_configs:
         - targets:
             - localhost

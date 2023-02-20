@@ -69,21 +69,20 @@ data:
                 "mode": "thresholds"
               },
               "mappings": [],
-              "max": 100,
-              "noValue": "0",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "red",
+                    "color": "green",
                     "value": null
                   },
                   {
-                    "color": "green",
+                    "color": "red",
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "percent"
             },
             "overrides": []
           },
@@ -95,6 +94,9 @@ data:
           },
           "id": 30,
           "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
@@ -103,9 +105,7 @@ data:
               "fields": "",
               "values": false
             },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true,
-            "text": {}
+            "textMode": "auto"
           },
           "pluginVersion": "9.2.4",
           "targets": [
@@ -115,7 +115,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "(1 - (sum(rate(coredns_cache_misses_total{instance=~\"$instance\", job=~\"nodelocaldns\"}[$__interval])) / (sum(rate(coredns_dns_requests_total{instance=~\"$instance\", job=~\"nodelocaldns\"}[$__interval])))))* 100",
+              "expr": "(sum(rate(coredns_cache_hits_total{job=~\"nodelocaldns\"}[5m])) / (sum(rate(coredns_dns_requests_total{ job=~\"nodelocaldns\"}[5m]))))* 100",
               "format": "time_series",
               "interval": "",
               "legendFormat": "缓存命中率",
@@ -124,7 +124,7 @@ data:
             }
           ],
           "title": "cache hitrate",
-          "type": "gauge"
+          "type": "stat"
         },
         {
           "aliasColors": {},

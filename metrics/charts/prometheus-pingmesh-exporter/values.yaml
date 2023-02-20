@@ -62,7 +62,7 @@ extraContainers: []
 ## Enable pod security policy
 pspEnabled: true
 
-hostNetwork: false
+hostNetwork: true
 
 strategy:
   rollingUpdate:

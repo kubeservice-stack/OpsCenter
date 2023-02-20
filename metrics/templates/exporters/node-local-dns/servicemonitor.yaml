@@ -1,0 +1,39 @@
+{{- if .Values.nodeLocalDns.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-node-local-dns
+  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-node-local-dns
+  {{- with .Values.nodeLocalDns.serviceMonitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      app: {{ template "kube-prometheus-stack.name" . }}-node-local-dns
+      release: {{ $.Release.Name | quote }}
+  namespaceSelector:
+    matchNames:
+      - "kube-system"
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.nodeLocalDns.serviceMonitor.interval}}
+    interval: {{ .Values.nodeLocalDns.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.nodeLocalDns.serviceMonitor.proxyUrl }}
+    proxyUrl: {{ .Values.nodeLocalDns.serviceMonitor.proxyUrl}}
+    {{- end }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+{{- if .Values.nodeLocalDns.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ tpl (toYaml .Values.nodeLocalDns.serviceMonitor.metricRelabelings | indent 4) . }}
+{{- end }}
+{{- if .Values.nodeLocalDns.serviceMonitor.relabelings }}
+    relabelings:
+{{ tpl (toYaml .Values.nodeLocalDns.serviceMonitor.relabelings | indent 4) . }}
+{{- end }}
+{{- end }}

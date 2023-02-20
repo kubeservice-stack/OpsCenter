@@ -1,0 +1,24 @@
+{{- if .Values.nodeLocalDns.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-node-local-dns
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-node-local-dns
+    jobLabel: nodelocaldns
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.nodeLocalDns.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.nodeLocalDns.service.targetPort }}
+  selector:
+    {{- if .Values.nodeLocalDns.service.selector }}
+{{ toYaml .Values.nodeLocalDns.service.selector | indent 4 }}
+    {{- else}}
+    k8s-app: node-local-dns
+    {{- end}}
+{{- end }}

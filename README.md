@@ -66,7 +66,7 @@ $ helm upgrade metrics . --namespace monitoring  ## 更新配置
 $ helm uninstall metrics --namespace monitoring  ## 卸载
 ```
 
-或者 通过`helm template` 方式部署
+或者 通过 `helm template` 方式部署
 
 ```bash
 $ helm template metrics . --namespace monitoring > metrics-allinone.yaml
@@ -91,7 +91,7 @@ $ helm upgrade promtail . --namespace monitoring  ## 更新配置
 $ helm uninstall promtail --namespace monitoring  ## 卸载
 ```
 
-或者 通过`helm template` 方式部署
+或者 通过 `helm template` 方式部署
 
 ```bash
 $ helm template loki . --namespace monitoring > loki-allinone.yaml
@@ -114,7 +114,7 @@ $ helm uninstall tempo . --namespace monitoring  ## 卸载
 ```
 
 
-或者 通过`helm template` 方式部署
+或者 通过 `helm template` 方式部署
 
 ```bash
 $ helm template tempo . --namespace monitoring > tempo-allinone.yaml

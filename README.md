@@ -127,5 +127,5 @@ TODO
 
 ## 效果演示
 
-![Opscenter Demo](https://www.kubeservice.cn/img/devops/opscenter.gif)
+![Opscenter Demo](opscenter.gif)
 

@@ -1,0 +1,3075 @@
+---
+# Source: oncall/charts/grafana/templates/podsecuritypolicy.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: oncall-grafana
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    # Default set from Docker, with DAC_OVERRIDE and CHOWN
+      - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'csi'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: false
+---
+# Source: oncall/charts/grafana/templates/tests/test-podsecuritypolicy.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: oncall-grafana-test
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  allowPrivilegeEscalation: true
+  privileged: false
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  fsGroup:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - projected
+  - csi
+  - secret
+---
+# Source: oncall/charts/grafana/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  name: oncall-grafana
+  namespace: monitoring
+---
+# Source: oncall/charts/grafana/templates/tests/test-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  name: oncall-grafana-test
+  namespace: monitoring
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx
+  namespace: monitoring
+automountServiceAccountToken: true
+---
+# Source: oncall/charts/mariadb/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: oncall-mariadb
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.0.10
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+automountServiceAccountToken: false
+---
+# Source: oncall/charts/rabbitmq/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: oncall-rabbitmq
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: true
+secrets:
+  - name: oncall-rabbitmq
+---
+# Source: oncall/charts/redis/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: oncall-redis
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: oncall/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: oncall
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: oncall/charts/grafana/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  admin-user: "YWRtaW4="
+  admin-password: "Nk1CTVh4bVhMMXdHZkUyd0xITW5jWnBUWjhLa2RKY1NUVEV0SDdVbA=="
+  ldap-toml: ""
+---
+# Source: oncall/charts/mariadb/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall-mariadb
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.0.10
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  mariadb-root-password: "dUdyNnRyVHFXNw=="
+---
+# Source: oncall/charts/rabbitmq/templates/config-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall-rabbitmq-config
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  rabbitmq.conf: |-
+    IyMgVXNlcm5hbWUgYW5kIHBhc3N3b3JkCiMjCmRlZmF1bHRfdXNlciA9IHVzZXIKZGVmYXVsdF9wYXNzID0gQ0hBTkdFTUUKIyMgQ2x1c3RlcmluZwojIwpjbHVzdGVyX2Zvcm1hdGlvbi5wZWVyX2Rpc2NvdmVyeV9iYWNrZW5kICA9IHJhYmJpdF9wZWVyX2Rpc2NvdmVyeV9rOHMKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmhvc3QgPSBrdWJlcm5ldGVzLmRlZmF1bHQKY2x1c3Rlcl9mb3JtYXRpb24ubm9kZV9jbGVhbnVwLmludGVydmFsID0gMTAKY2x1c3Rlcl9mb3JtYXRpb24ubm9kZV9jbGVhbnVwLm9ubHlfbG9nX3dhcm5pbmcgPSB0cnVlCmNsdXN0ZXJfcGFydGl0aW9uX2hhbmRsaW5nID0gYXV0b2hlYWwKIyBxdWV1ZSBtYXN0ZXIgbG9jYXRvcgpxdWV1ZV9tYXN0ZXJfbG9jYXRvciA9IG1pbi1tYXN0ZXJzCiMgZW5hYmxlIGd1ZXN0IHVzZXIKbG9vcGJhY2tfdXNlcnMuZ3Vlc3QgPSBmYWxzZQojZGVmYXVsdF92aG9zdCA9IG1vbml0b3Jpbmctdmhvc3QKI2Rpc2tfZnJlZV9saW1pdC5hYnNvbHV0ZSA9IDUwTUI=
+---
+# Source: oncall/charts/rabbitmq/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall-rabbitmq
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  rabbitmq-password: "ZVJSa2hvMzRZSUxkcDFvQw=="
+  
+  rabbitmq-erlang-cookie: "T2FsdjFZR1Vaa0c4c3BoUmtaY21LclpNeEJ6eDJCVzA="
+---
+# Source: oncall/charts/redis/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall-redis
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  redis-password: "bzhxY0tpTjVHUQ=="
+---
+# Source: oncall/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oncall
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  SECRET_KEY: "dGdQb3hFZE96NTZLTkpYVWpLZDc1bG5EOWRidGd3c3VHZDhJS1pkRA=="
+  MIRAGE_SECRET_KEY: "VG9aRUJDVk5DdUxwZlZoUzd4d1o1b1Y5cHlRWTJiQ0hBcEpmTTdhdQ=="
+---
+# Source: oncall/charts/grafana/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+data:
+  plugins: grafana-oncall-app
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+    [server]
+    domain = example.com
+    root_url = %(protocol)s://%(domain)s/grafana
+    serve_from_sub_path = true
+---
+# Source: oncall/charts/grafana/templates/tests/test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-grafana-test
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+data:
+  run.sh: |-
+    @test "Test Health" {
+      url="http://oncall-grafana/api/health"
+
+      code=$(wget --server-response --spider --timeout 10 --tries 1 ${url} 2>&1 | awk '/^  HTTP/{print $2}')
+      [ "$code" == "200" ]
+    }
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx-controller
+  namespace: monitoring
+data:
+  allow-snippet-annotations: "true"
+---
+# Source: oncall/charts/mariadb/templates/primary/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-mariadb
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.0.10
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+data:
+  my.cnf: |-
+    [mysqld]
+    skip-name-resolve
+    explicit_defaults_for_timestamp
+    basedir=/opt/bitnami/mariadb
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    tmpdir=/opt/bitnami/mariadb/tmp
+    max_allowed_packet=16M
+    bind-address=*
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    log-error=/opt/bitnami/mariadb/logs/mysqld.log
+    character-set-server=UTF8
+    collation-server=utf8_general_ci
+    slow_query_log=0
+    slow_query_log_file=/opt/bitnami/mariadb/logs/mysqld.log
+    long_query_time=10.0
+    
+    [client]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    default-character-set=UTF8
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    
+    [manager]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+---
+# Source: oncall/charts/redis/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-redis-configuration
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+data:
+  redis.conf: |-
+    # User-supplied common configuration:
+    # Enable AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Disable RDB persistence, AOF persistence already enabled.
+    save ""
+    # End of common configuration
+  master.conf: |-
+    dir /data
+    # User-supplied master configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of master configuration
+  replica.conf: |-
+    dir /data
+    slave-read-only yes
+    # User-supplied replica configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of replica configuration
+---
+# Source: oncall/charts/redis/templates/health-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-redis-health
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+data:
+  ping_readiness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ] && [ "$responseFirstWord" != "MASTERDOWN" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_readiness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_readiness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+  ping_liveness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_liveness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_liveness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+---
+# Source: oncall/charts/redis/templates/scripts-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-redis-scripts
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+data:
+  start-master.sh: |
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    if [[ ! -f /opt/bitnami/redis/etc/master.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/master.conf /opt/bitnami/redis/etc/master.conf
+    fi
+    if [[ ! -f /opt/bitnami/redis/etc/redis.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+    fi
+    ARGS=("--port" "${REDIS_PORT}")
+    ARGS+=("--requirepass" "${REDIS_PASSWORD}")
+    ARGS+=("--masterauth" "${REDIS_PASSWORD}")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
+    exec redis-server "${ARGS[@]}"
+  start-replica.sh: |
+    #!/bin/bash
+
+    get_port() {
+        hostname="$1"
+        type="$2"
+
+        port_var=$(echo "${hostname^^}_SERVICE_PORT_$type" | sed "s/-/_/g")
+        port=${!port_var}
+
+        if [ -z "$port" ]; then
+            case $type in
+                "SENTINEL")
+                    echo 26379
+                    ;;
+                "REDIS")
+                    echo 6379
+                    ;;
+            esac
+        else
+            echo $port
+        fi
+    }
+
+    get_full_hostname() {
+        hostname="$1"
+        echo "${hostname}.${HEADLESS_SERVICE}"
+    }
+
+    REDISPORT=$(get_port "$HOSTNAME" "REDIS")
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    if [[ ! -f /opt/bitnami/redis/etc/replica.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/replica.conf /opt/bitnami/redis/etc/replica.conf
+    fi
+    if [[ ! -f /opt/bitnami/redis/etc/redis.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+    fi
+
+    echo "" >> /opt/bitnami/redis/etc/replica.conf
+    echo "replica-announce-port $REDISPORT" >> /opt/bitnami/redis/etc/replica.conf
+    echo "replica-announce-ip $(get_full_hostname "$HOSTNAME")" >> /opt/bitnami/redis/etc/replica.conf
+    ARGS=("--port" "${REDIS_PORT}")
+    ARGS+=("--slaveof" "${REDIS_MASTER_HOST}" "${REDIS_MASTER_PORT_NUMBER}")
+    ARGS+=("--requirepass" "${REDIS_PASSWORD}")
+    ARGS+=("--masterauth" "${REDIS_MASTER_PASSWORD}")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/replica.conf")
+    exec redis-server "${ARGS[@]}"
+---
+# Source: oncall/charts/grafana/templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  finalizers:
+    - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+---
+# Source: oncall/charts/grafana/templates/clusterrole.yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  name: oncall-grafana-clusterrole
+rules: []
+---
+# Source: oncall/charts/ingress-nginx/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+  name: oncall-ingress-nginx
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - endpoints
+      - nodes
+      - pods
+      - secrets
+      - namespaces
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+---
+# Source: oncall/charts/grafana/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: oncall-grafana-clusterrolebinding
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+subjects:
+  - kind: ServiceAccount
+    name: oncall-grafana
+    namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: oncall-grafana-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: oncall/charts/ingress-nginx/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+  name: oncall-ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: oncall-ingress-nginx
+subjects:
+  - kind: ServiceAccount
+    name: oncall-ingress-nginx
+    namespace: "monitoring"
+---
+# Source: oncall/charts/grafana/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [oncall-grafana]
+---
+# Source: oncall/charts/grafana/templates/tests/test-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: oncall-grafana-test
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups:      ['policy']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [oncall-grafana-test]
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx
+  namespace: monitoring
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - pods
+      - secrets
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    resourceNames:
+      - ingress-controller-leader
+    verbs:
+      - get
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+# Source: oncall/charts/rabbitmq/templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: oncall-rabbitmq-endpoint-reader
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create"]
+---
+# Source: oncall/charts/grafana/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oncall-grafana
+subjects:
+- kind: ServiceAccount
+  name: oncall-grafana
+  namespace: monitoring
+---
+# Source: oncall/charts/grafana/templates/tests/test-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oncall-grafana-test
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oncall-grafana-test
+subjects:
+- kind: ServiceAccount
+  name: oncall-grafana-test
+  namespace: monitoring
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx
+  namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oncall-ingress-nginx
+subjects:
+  - kind: ServiceAccount
+    name: oncall-ingress-nginx
+    namespace: "monitoring"
+---
+# Source: oncall/charts/rabbitmq/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: oncall-rabbitmq-endpoint-reader
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+subjects:
+  - kind: ServiceAccount
+    name: oncall-rabbitmq
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oncall-rabbitmq-endpoint-reader
+---
+# Source: oncall/charts/grafana/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: service
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+
+  selector:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-service-webhook.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx-controller-admission
+  namespace: monitoring
+spec:
+  type: ClusterIP
+  ports:
+    - name: https-webhook
+      port: 443
+      targetPort: webhook
+      appProtocol: https
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: controller
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx-controller
+  namespace: monitoring
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: SingleStack
+  ipFamilies: 
+    - IPv4
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+      appProtocol: http
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+      appProtocol: https
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: controller
+---
+# Source: oncall/charts/mariadb/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-mariadb
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.0.10
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: mysql
+      nodePort: null
+  selector: 
+    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: primary
+---
+# Source: oncall/charts/rabbitmq/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-rabbitmq-headless
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+spec:
+  clusterIP: None
+  ports:
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+    - name: dist
+      port: 25672
+      targetPort: dist
+    - name: http-stats
+      port: 15672
+      targetPort: stats
+  selector: 
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/instance: oncall
+  publishNotReadyAddresses: true
+---
+# Source: oncall/charts/rabbitmq/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-rabbitmq
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+      nodePort: null
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+      nodePort: null
+    - name: dist
+      port: 25672
+      targetPort: dist
+      nodePort: null
+    - name: http-stats
+      port: 15672
+      targetPort: stats
+      nodePort: null
+  selector: 
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/instance: oncall
+---
+# Source: oncall/charts/redis/templates/headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-redis-headless
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: oncall
+---
+# Source: oncall/charts/redis/templates/master/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-redis-master
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: master
+spec:
+  type: ClusterIP
+  internalTrafficPolicy: Cluster
+  sessionAffinity: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: master
+---
+# Source: oncall/charts/redis/templates/replicas/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-redis-replicas
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: replica
+spec:
+  type: ClusterIP
+  internalTrafficPolicy: Cluster
+  sessionAffinity: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: replica
+---
+# Source: oncall/templates/engine/service-internal.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: oncall-engine
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: engine
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/component: engine
+---
+# Source: oncall/charts/grafana/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncall-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/instance: oncall
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/instance: oncall
+      annotations:
+        checksum/config: 8c1f451c6f79128039698e36e09f2fa3860badfa11075fa980d7d57d7db110b0
+        checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/secret: 9944c9f71d17f25628ae44ccf9fddc2b97a0bf98048f53689cd2a424fb31a94c
+    spec:
+      
+      serviceAccountName: oncall-grafana
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 472
+        runAsGroup: 472
+        runAsUser: 472
+      initContainers:
+        - name: init-chown-data
+          image: "busybox:1.31.1"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "472:472", "/var/lib/grafana"]
+          resources:
+            {}
+          volumeMounts:
+            - name: storage
+              mountPath: "/var/lib/grafana"
+      enableServiceLinks: true
+      containers:
+        - name: grafana
+          image: "grafana/grafana:8.5.3"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
+            - name: storage
+              mountPath: "/var/lib/grafana"
+          ports:
+            - name: service
+              containerPort: 80
+              protocol: TCP
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-grafana
+                  key: admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-grafana
+                  key: admin-password
+            - name: GF_INSTALL_PLUGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: oncall-grafana
+                  key: plugins
+            - name: GF_PATHS_DATA
+              value: /var/lib/grafana/
+            - name: GF_PATHS_LOGS
+              value: /var/log/grafana
+            - name: GF_PATHS_PLUGINS
+              value: /var/lib/grafana/plugins
+            - name: GF_PATHS_PROVISIONING
+              value: /etc/grafana/provisioning
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+          resources:
+            {}
+      volumes:
+        - name: config
+          configMap:
+            name: oncall-grafana
+        - name: storage
+          persistentVolumeClaim:
+            claimName: oncall-grafana
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: oncall-ingress-nginx-controller
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: controller
+  replicas: 1
+  revisionHistoryLimit: 10
+  minReadySeconds: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/component: controller
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: controller
+          image: "registry.k8s.io/ingress-nginx/controller:v1.2.1@sha256:5516d103a9c2ecc4f026efbd4b40662ce22dc1f824fb129ed121460aaa5c47f8"
+          imagePullPolicy: IfNotPresent
+          lifecycle: 
+            preStop:
+              exec:
+                command:
+                - /wait-shutdown
+          args:
+            - /nginx-ingress-controller
+            - --publish-service=$(POD_NAMESPACE)/oncall-ingress-nginx-controller
+            - --election-id=ingress-controller-leader
+            - --controller-class=k8s.io/ingress-nginx
+            - --ingress-class=nginx
+            - --configmap=$(POD_NAMESPACE)/oncall-ingress-nginx-controller
+            - --validating-webhook=:8443
+            - --validating-webhook-certificate=/usr/local/certificates/cert
+            - --validating-webhook-key=/usr/local/certificates/key
+          securityContext: 
+            capabilities:
+              drop:
+              - ALL
+              add:
+              - NET_BIND_SERVICE
+            runAsUser: 101
+            allowPrivilegeEscalation: true
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: LD_PRELOAD
+              value: /usr/local/lib/libmimalloc.so
+          livenessProbe: 
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe: 
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: webhook
+              containerPort: 8443
+              protocol: TCP
+          volumeMounts:
+            - name: webhook-cert
+              mountPath: /usr/local/certificates/
+              readOnly: true
+          resources: 
+            requests:
+              cpu: 100m
+              memory: 90Mi
+      nodeSelector: 
+        kubernetes.io/os: linux
+      serviceAccountName: oncall-ingress-nginx
+      terminationGracePeriodSeconds: 300
+      volumes:
+        - name: webhook-cert
+          secret:
+            secretName: oncall-ingress-nginx-admission
+---
+# Source: oncall/templates/celery/deployment-celery.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncall-celery
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oncall
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: celery
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: oncall
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/component: celery
+    spec:
+      serviceAccountName: oncall
+      securityContext:
+        {}
+      initContainers:        
+        - name: wait-for-db
+          image: "grafana/oncall:v1.1.24"
+          imagePullPolicy: Always
+          command: ['sh', '-c', "until (python manage.py migrate --check); do echo Waiting for database migrations; sleep 2; done"]
+          securityContext:
+          
+            {}
+          env:
+            - name: BASE_URL
+              value: https://opscenter.oncall.com
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: SECRET_KEY
+            - name: MIRAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: MIRAGE_SECRET_KEY
+            - name: MIRAGE_CIPHER_IV
+              value: "1234567890abcdef"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "settings.helm"
+            - name: AMIXR_DJANGO_ADMIN_PATH
+              value: "admin"
+            - name: OSS
+              value: "True"
+            - name: UWSGI_LISTEN
+              value: "1024"
+            - name: BROKER_TYPE
+              value: rabbitmq
+            - name: GRAFANA_API_URL
+              value: http://oncall-grafana
+            - name: MYSQL_HOST
+              value: oncall-mariadb
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DB_NAME
+              value: "oncall"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: oncall-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PROTOCOL
+              value: "amqp"
+            - name: RABBITMQ_VHOST
+              value: ""
+            - name: REDIS_HOST
+              value: oncall-redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+      containers:
+        - name: oncall
+          securityContext:
+            {}
+          image: "grafana/oncall:v1.1.24"
+          command: ["./celery_with_exporter.sh"]
+          imagePullPolicy: Always
+          env:
+            
+            - name: CELERY_WORKER_QUEUE
+              value: default,critical,long,slack,telegram,webhook,celery
+            - name: CELERY_WORKER_CONCURRENCY
+              value: "1"
+            - name: CELERY_WORKER_MAX_TASKS_PER_CHILD
+              value: "100"
+            - name: CELERY_WORKER_BEAT_ENABLED
+              value: "True"
+            - name: CELERY_WORKER_SHUTDOWN_INTERVAL
+              value: 65m
+            - name: BASE_URL
+              value: https://opscenter.oncall.com
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: SECRET_KEY
+            - name: MIRAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: MIRAGE_SECRET_KEY
+            - name: MIRAGE_CIPHER_IV
+              value: "1234567890abcdef"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "settings.helm"
+            - name: AMIXR_DJANGO_ADMIN_PATH
+              value: "admin"
+            - name: OSS
+              value: "True"
+            - name: UWSGI_LISTEN
+              value: "1024"
+            - name: BROKER_TYPE
+              value: rabbitmq
+            - name: GRAFANA_API_URL
+              value: http://oncall-grafana
+            - name: FEATURE_SLACK_INTEGRATION_ENABLED
+              value: "True"
+            - name: SLACK_SLASH_COMMAND_NAME
+              value: "/oncall"
+            - name: SLACK_CLIENT_OAUTH_ID
+              value: "4.830175787957483e+12"
+            - name: SLACK_CLIENT_OAUTH_SECRET
+              value: "9464428132d845b3faca7faca988fd00"
+            - name: SLACK_SIGNING_SECRET
+              value: "50335af3313ae7498b99cd40f811bcc7"
+            - name: SLACK_INSTALL_RETURN_REDIRECT_HOST
+              value: "https://opscenter.oncall.com"
+            - name: FEATURE_TELEGRAM_INTEGRATION_ENABLED
+              value: "False"
+            - name: FEATURE_EMAIL_INTEGRATION_ENABLED
+              value: "False"
+            - name: MYSQL_HOST
+              value: oncall-mariadb
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DB_NAME
+              value: "oncall"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: oncall-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PROTOCOL
+              value: "amqp"
+            - name: RABBITMQ_VHOST
+              value: ""
+            - name: REDIS_HOST
+              value: oncall-redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+          livenessProbe:
+            exec:
+              command: [
+                "bash",
+                "-c",
+                "celery -A engine inspect ping -d celery@$HOSTNAME"
+              ]
+            initialDelaySeconds: 30
+            periodSeconds: 300
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+# Source: oncall/templates/engine/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncall-engine
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oncall
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: engine
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: oncall
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/component: engine
+    spec:
+      serviceAccountName: oncall
+      securityContext:
+        {}
+      initContainers:        
+        - name: wait-for-db
+          image: "grafana/oncall:v1.1.24"
+          imagePullPolicy: Always
+          command: ['sh', '-c', "until (python manage.py migrate --check); do echo Waiting for database migrations; sleep 2; done"]
+          securityContext:
+          
+            {}
+          env:
+            - name: BASE_URL
+              value: https://opscenter.oncall.com
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: SECRET_KEY
+            - name: MIRAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: MIRAGE_SECRET_KEY
+            - name: MIRAGE_CIPHER_IV
+              value: "1234567890abcdef"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "settings.helm"
+            - name: AMIXR_DJANGO_ADMIN_PATH
+              value: "admin"
+            - name: OSS
+              value: "True"
+            - name: UWSGI_LISTEN
+              value: "1024"
+            - name: BROKER_TYPE
+              value: rabbitmq
+            - name: GRAFANA_API_URL
+              value: http://oncall-grafana
+            - name: MYSQL_HOST
+              value: oncall-mariadb
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DB_NAME
+              value: "oncall"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: oncall-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PROTOCOL
+              value: "amqp"
+            - name: RABBITMQ_VHOST
+              value: ""
+            - name: REDIS_HOST
+              value: oncall-redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+      containers:
+        - name: oncall
+          securityContext:
+            {}
+          image: "grafana/oncall:v1.1.24"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: BASE_URL
+              value: https://opscenter.oncall.com
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: SECRET_KEY
+            - name: MIRAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: MIRAGE_SECRET_KEY
+            - name: MIRAGE_CIPHER_IV
+              value: "1234567890abcdef"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "settings.helm"
+            - name: AMIXR_DJANGO_ADMIN_PATH
+              value: "admin"
+            - name: OSS
+              value: "True"
+            - name: UWSGI_LISTEN
+              value: "1024"
+            - name: BROKER_TYPE
+              value: rabbitmq
+            - name: GRAFANA_API_URL
+              value: http://oncall-grafana
+            - name: FEATURE_SLACK_INTEGRATION_ENABLED
+              value: "True"
+            - name: SLACK_SLASH_COMMAND_NAME
+              value: "/oncall"
+            - name: SLACK_CLIENT_OAUTH_ID
+              value: "4.830175787957483e+12"
+            - name: SLACK_CLIENT_OAUTH_SECRET
+              value: "9464428132d845b3faca7faca988fd00"
+            - name: SLACK_SIGNING_SECRET
+              value: "50335af3313ae7498b99cd40f811bcc7"
+            - name: SLACK_INSTALL_RETURN_REDIRECT_HOST
+              value: "https://opscenter.oncall.com"
+            - name: FEATURE_TELEGRAM_INTEGRATION_ENABLED
+              value: "False"
+            - name: FEATURE_EMAIL_INTEGRATION_ENABLED
+              value: "False"
+            
+            - name: MYSQL_HOST
+              value: oncall-mariadb
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DB_NAME
+              value: "oncall"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: oncall-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PROTOCOL
+              value: "amqp"
+            - name: RABBITMQ_VHOST
+              value: ""
+            - name: REDIS_HOST
+              value: oncall-redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            periodSeconds: 60
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ready/
+              port: http
+            periodSeconds: 60
+            timeoutSeconds: 3
+          startupProbe:
+            httpGet:
+              path: /startupprobe/
+              port: http
+            periodSeconds: 60
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+# Source: oncall/charts/mariadb/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oncall-mariadb
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.0.10
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels: 
+      app.kubernetes.io/name: mariadb
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: primary
+  serviceName: oncall-mariadb
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/configuration: a4b8ef1d99675d8c4e883529e2319e556f37b558c3bba84cba1b9044961f4766
+      labels:
+        app.kubernetes.io/name: mariadb
+        helm.sh/chart: mariadb-11.0.10
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: primary
+    spec:
+      
+      serviceAccountName: oncall-mariadb
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mariadb
+                    app.kubernetes.io/instance: oncall
+                    app.kubernetes.io/component: primary
+                namespaces:
+                  - "monitoring"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: mariadb
+          image: docker.io/bitnami/mariadb:10.6.8-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            - name: MARIADB_DATABASE
+              value: "oncall"
+            - name: MARIADB_COLLATE
+              value: utf8mb4_unicode_ci
+            - name: MARIADB_CHARACTER_SET
+              value: utf8mb4
+          ports:
+            - name: mysql
+              containerPort: 3306
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                      password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+                  fi
+                  mysqladmin status -uroot -p"${password_aux}"
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                      password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+                  fi
+                  mysqladmin status -uroot -p"${password_aux}"
+          resources: 
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/mariadb
+            - name: config
+              mountPath: /opt/bitnami/mariadb/conf/my.cnf
+              subPath: my.cnf
+      volumes:
+        - name: config
+          configMap:
+            name: oncall-mariadb
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels: 
+          app.kubernetes.io/name: mariadb
+          app.kubernetes.io/instance: oncall
+          app.kubernetes.io/component: primary
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: oncall/charts/rabbitmq/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oncall-rabbitmq
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-10.1.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: oncall-rabbitmq-headless
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rabbitmq
+      app.kubernetes.io/instance: oncall
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rabbitmq
+        helm.sh/chart: rabbitmq-10.1.1
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/managed-by: Helm
+      annotations:
+        checksum/config: 54f3a0f0840d429e89e7c31b46499d08b439937a64b0b32660c9273bd7b04803
+        checksum/secret: 29f92596263027cfde0b6863ebc09591ecd6160aee23e3dc8033f15fd9833cbc
+    spec:
+      
+      serviceAccountName: oncall-rabbitmq
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: rabbitmq
+                    app.kubernetes.io/instance: oncall
+                namespaces:
+                  - "monitoring"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      terminationGracePeriodSeconds: 120
+      initContainers:
+      containers:
+        - name: rabbitmq
+          image: docker.io/bitnami/rabbitmq:3.10.2-debian-10-r7
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -ec
+                  - |
+                    if [[ -f /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh ]]; then
+                        /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh -t "120" -d "false"
+                    else
+                        rabbitmqctl stop_app
+                    fi
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8S_SERVICE_NAME
+              value: oncall-rabbitmq-headless
+            - name: K8S_ADDRESS_TYPE
+              value: hostname
+            - name: RABBITMQ_FORCE_BOOT
+              value: "no"
+            - name: RABBITMQ_NODE_NAME
+              value: "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: K8S_HOSTNAME_SUFFIX
+              value: ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: RABBITMQ_MNESIA_DIR
+              value: "/bitnami/rabbitmq/mnesia/$(RABBITMQ_NODE_NAME)"
+            - name: RABBITMQ_LDAP_ENABLE
+              value: "no"
+            - name: RABBITMQ_LOGS
+              value: "-"
+            - name: RABBITMQ_ULIMIT_NOFILES
+              value: "65536"
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_ERL_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_LOAD_DEFINITIONS
+              value: "no"
+            - name: RABBITMQ_DEFINITIONS_FILE
+              value: "/app/load_definition.json"
+            - name: RABBITMQ_SECURE_PASSWORD
+              value: "yes"
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_PLUGINS
+              value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
+          envFrom:
+          ports:
+            - name: amqp
+              containerPort: 5672
+            - name: dist
+              containerPort: 25672
+            - name: stats
+              containerPort: 15672
+            - name: epmd
+              containerPort: 4369
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 20
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - rabbitmq-diagnostics -q ping
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 20
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
+          resources:
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: configuration
+              mountPath: /bitnami/rabbitmq/conf
+            - name: data
+              mountPath: /bitnami/rabbitmq/mnesia
+      volumes:
+        - name: configuration
+          secret:
+            secretName: oncall-rabbitmq-config
+            items:
+              - key: rabbitmq.conf
+                path: rabbitmq.conf
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app.kubernetes.io/name: rabbitmq
+          app.kubernetes.io/instance: oncall
+      spec:
+        accessModes:
+            - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: oncall/charts/redis/templates/master/application.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oncall-redis-master
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: master
+  serviceName: oncall-redis-headless
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+        helm.sh/chart: redis-16.10.1
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: master
+      annotations:
+        checksum/configmap: 285d3c0bf845c7f6d624598a8c52058696f1930c94e38b46b71917b8157da2f7
+        checksum/health: 023192e747d2e45454b2d74f7bed17e467e6bb953102ba92616060e6725a0c64
+        checksum/scripts: ea12347c3a411c02758621ea5e28fc4752b21dc47950e1339cbc7300627fdc20
+        checksum/secret: 6d147a4ebc8fc78b216379ecbfac8d32363d5ad0b81a4a9eaa1eb1d9c80cbc04
+    spec:
+      
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: oncall-redis
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: redis
+                    app.kubernetes.io/instance: oncall
+                    app.kubernetes.io/component: master
+                namespaces:
+                  - "monitoring"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:6.2.7-debian-10-r23
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          command:
+            - /bin/bash
+          args:
+            - -c
+            - /opt/bitnami/scripts/start-scripts/start-master.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: REDIS_REPLICATION_MODE
+              value: master
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "no"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+            - name: REDIS_TLS_ENABLED
+              value: "no"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - name: redis
+              containerPort: 6379
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            # One second longer than command timeout should prevent generation of zombie processes.
+            timeoutSeconds: 6
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local.sh 5
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local.sh 1
+          resources:
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: start-scripts
+              mountPath: /opt/bitnami/scripts/start-scripts
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+              subPath: 
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: redis-tmp-conf
+              mountPath: /opt/bitnami/redis/etc/
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: start-scripts
+          configMap:
+            name: oncall-redis-scripts
+            defaultMode: 0755
+        - name: health
+          configMap:
+            name: oncall-redis-health
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: oncall-redis-configuration
+        - name: redis-tmp-conf
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+        labels:
+          app.kubernetes.io/name: redis
+          app.kubernetes.io/instance: oncall
+          app.kubernetes.io/component: master
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: oncall/charts/redis/templates/replicas/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oncall-redis-replicas
+  namespace: "monitoring"
+  labels:
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-16.10.1
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: replica
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/instance: oncall
+      app.kubernetes.io/component: replica
+  serviceName: oncall-redis-headless
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+        helm.sh/chart: redis-16.10.1
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: replica
+      annotations:
+        checksum/configmap: 285d3c0bf845c7f6d624598a8c52058696f1930c94e38b46b71917b8157da2f7
+        checksum/health: 023192e747d2e45454b2d74f7bed17e467e6bb953102ba92616060e6725a0c64
+        checksum/scripts: ea12347c3a411c02758621ea5e28fc4752b21dc47950e1339cbc7300627fdc20
+        checksum/secret: eb97adc64d5e4d945e8e93924b84f463efd35873c2e691ac57ca9eec436e8838
+    spec:
+      
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: oncall-redis
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: redis
+                    app.kubernetes.io/instance: oncall
+                    app.kubernetes.io/component: replica
+                namespaces:
+                  - "monitoring"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:6.2.7-debian-10-r23
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          command:
+            - /bin/bash
+          args:
+            - -c
+            - /opt/bitnami/scripts/start-scripts/start-replica.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: REDIS_REPLICATION_MODE
+              value: slave
+            - name: REDIS_MASTER_HOST
+              value: oncall-redis-master-0.oncall-redis-headless.monitoring.svc.cluster.local
+            - name: REDIS_MASTER_PORT_NUMBER
+              value: "6379"
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "no"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+            - name: REDIS_MASTER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+            - name: REDIS_TLS_ENABLED
+              value: "no"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - name: redis
+              containerPort: 6379
+          startupProbe:
+            failureThreshold: 22
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            tcpSocket:
+              port: redis
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 6
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local_and_master.sh 5
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local_and_master.sh 1
+          resources:
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: start-scripts
+              mountPath: /opt/bitnami/scripts/start-scripts
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+              subPath: 
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: redis-tmp-conf
+              mountPath: /opt/bitnami/redis/etc
+      volumes:
+        - name: start-scripts
+          configMap:
+            name: oncall-redis-scripts
+            defaultMode: 0755
+        - name: health
+          configMap:
+            name: oncall-redis-health
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: oncall-redis-configuration
+        - name: redis-tmp-conf
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+        labels:
+          app.kubernetes.io/name: redis
+          app.kubernetes.io/instance: oncall
+          app.kubernetes.io/component: replica
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: oncall/templates/engine/job-migrate.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oncall-engine-migrate-2023-02-21-14-44-05
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: engine
+spec:
+  backoffLimit: 15
+  ttlSecondsAfterFinished: 20
+  template:
+    metadata:
+      name: oncall-engine-migrate-2023-02-21-14-44-05
+      labels:
+        app.kubernetes.io/name: oncall
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/component: engine
+    spec:
+      restartPolicy: Never
+      serviceAccountName: oncall
+      securityContext:
+        {}
+      containers:
+      - name: oncall-migrate
+        securityContext:
+            {}
+        image: "grafana/oncall:v1.1.24"
+        imagePullPolicy: Always
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until (nc -vz $MYSQL_HOST $MYSQL_PORT);
+            do
+                echo "waiting for MySQL"; sleep 1;
+            done
+            python manage.py migrate
+        env:
+            - name: BASE_URL
+              value: https://opscenter.oncall.com
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: SECRET_KEY
+            - name: MIRAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oncall
+                  key: MIRAGE_SECRET_KEY
+            - name: MIRAGE_CIPHER_IV
+              value: "1234567890abcdef"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "settings.helm"
+            - name: AMIXR_DJANGO_ADMIN_PATH
+              value: "admin"
+            - name: OSS
+              value: "True"
+            - name: UWSGI_LISTEN
+              value: "1024"
+            - name: BROKER_TYPE
+              value: rabbitmq
+            - name: GRAFANA_API_URL
+              value: http://oncall-grafana
+            - name: FEATURE_EMAIL_INTEGRATION_ENABLED
+              value: "False"
+            - name: MYSQL_HOST
+              value: oncall-mariadb
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DB_NAME
+              value: "oncall"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-mariadb
+                  key: mariadb-root-password
+            
+            - name: RABBITMQ_USERNAME
+              value: "user"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: oncall-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PROTOCOL
+              value: "amqp"
+            - name: RABBITMQ_VHOST
+              value: ""
+            - name: REDIS_HOST
+              value: oncall-redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oncall-redis
+                  key: redis-password
+        resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+# Source: oncall/templates/ingress-regular.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oncall
+  namespace: monitoring
+  labels:
+    helm.sh/chart: oncall-1.1.24
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "v1.1.24"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+    - hosts:
+      - 'opscenter.oncall.com'
+      secretName: certificate-tls
+  rules:
+  - host: "opscenter.oncall.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oncall-engine
+            port:
+              number: 8080
+      
+      - path: /grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: oncall-grafana
+            port:
+              number: 80
+---
+# Source: oncall/templates/secrets.yaml
+---
+---
+# Source: oncall/templates/secrets.yaml
+---
+---
+# Source: oncall/charts/ingress-nginx/templates/controller-ingressclass.yaml
+# We don't support namespaced ingressClass yet
+# So a ClusterRole and a ClusterRoleBinding is required
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+  name: nginx
+spec:
+  controller: k8s.io/ingress-nginx
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/validating-webhook.yaml
+# before changing this value, check the required kubernetes version
+# https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#prerequisites
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+  name: oncall-ingress-nginx-admission
+webhooks:
+  - name: validate.nginx.ingress.kubernetes.io
+    matchPolicy: Equivalent
+    rules:
+      - apiGroups:
+          - networking.k8s.io
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - ingresses
+    failurePolicy: Fail
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        namespace: "monitoring"
+        name: oncall-ingress-nginx-controller-admission
+        path: /networking/v1/ingresses
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: oncall-ingress-nginx-admission
+  namespace: monitoring
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: oncall-ingress-nginx-admission
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+rules:
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - validatingwebhookconfigurations
+    verbs:
+      - get
+      - update
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name:  oncall-ingress-nginx-admission
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: oncall-ingress-nginx-admission
+subjects:
+  - kind: ServiceAccount
+    name: oncall-ingress-nginx-admission
+    namespace: "monitoring"
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name:  oncall-ingress-nginx-admission
+  namespace: monitoring
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - create
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oncall-ingress-nginx-admission
+  namespace: monitoring
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oncall-ingress-nginx-admission
+subjects:
+  - kind: ServiceAccount
+    name: oncall-ingress-nginx-admission
+    namespace: "monitoring"
+---
+# Source: oncall/charts/grafana/templates/tests/test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oncall-grafana-test
+  labels:
+    helm.sh/chart: grafana-6.29.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "8.5.3"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+  namespace: monitoring
+spec:
+  serviceAccountName: oncall-grafana-test
+  containers:
+    - name: oncall-test
+      image: "bats/bats:v1.4.1"
+      imagePullPolicy: "IfNotPresent"
+      command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
+      volumeMounts:
+        - mountPath: /tests
+          name: tests
+          readOnly: true
+  volumes:
+  - name: tests
+    configMap:
+      name: oncall-grafana-test
+  restartPolicy: Never
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/job-createSecret.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oncall-ingress-nginx-admission-create
+  namespace: monitoring
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+spec:
+  template:
+    metadata:
+      name: oncall-ingress-nginx-admission-create
+      labels:
+        helm.sh/chart: ingress-nginx-4.1.4
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/version: "1.2.1"
+        app.kubernetes.io/part-of: ingress-nginx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: admission-webhook
+    spec:
+      containers:
+        - name: create
+          image: "docker.io/dongjiang1989/ingress-nginx-kube-webhook-certgen:v1.1.1@sha256:8e5778e256fe2beaf8d3a17474b6e6231933c782a003b92cfbf7c04e75fb0d09"
+          imagePullPolicy: IfNotPresent
+          args:
+            - create
+            - --host=oncall-ingress-nginx-controller-admission,oncall-ingress-nginx-controller-admission.$(POD_NAMESPACE).svc
+            - --namespace=$(POD_NAMESPACE)
+            - --secret-name=oncall-ingress-nginx-admission
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          securityContext:
+            allowPrivilegeEscalation: false
+      restartPolicy: OnFailure
+      serviceAccountName: oncall-ingress-nginx-admission
+      nodeSelector: 
+        kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        fsGroup: 2000
+---
+# Source: oncall/charts/ingress-nginx/templates/admission-webhooks/job-patch/job-patchWebhook.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oncall-ingress-nginx-admission-patch
+  namespace: monitoring
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: ingress-nginx-4.1.4
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: oncall
+    app.kubernetes.io/version: "1.2.1"
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+spec:
+  template:
+    metadata:
+      name: oncall-ingress-nginx-admission-patch
+      labels:
+        helm.sh/chart: ingress-nginx-4.1.4
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/instance: oncall
+        app.kubernetes.io/version: "1.2.1"
+        app.kubernetes.io/part-of: ingress-nginx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: admission-webhook
+    spec:
+      containers:
+        - name: patch
+          image: "docker.io/dongjiang1989/ingress-nginx-kube-webhook-certgen:v1.1.1@sha256:8e5778e256fe2beaf8d3a17474b6e6231933c782a003b92cfbf7c04e75fb0d09"
+          imagePullPolicy: IfNotPresent
+          args:
+            - patch
+            - --webhook-name=oncall-ingress-nginx-admission
+            - --namespace=$(POD_NAMESPACE)
+            - --patch-mutating=false
+            - --secret-name=oncall-ingress-nginx-admission
+            - --patch-failure-policy=Fail
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          securityContext:
+            allowPrivilegeEscalation: false
+      restartPolicy: OnFailure
+      serviceAccountName: oncall-ingress-nginx-admission
+      nodeSelector: 
+        kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        fsGroup: 2000

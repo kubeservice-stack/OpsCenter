@@ -3591,7 +3591,7 @@ data:
           "1d"
         ]
       },
-      "timezone": "",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": " DevOps / Loki Metrics",
       "uid": "MQHVDmtWk",
       "version": 2,

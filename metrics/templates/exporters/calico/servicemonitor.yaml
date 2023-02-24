@@ -1,0 +1,39 @@
+{{- if .Values.calico.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-{{ .Values.calico.type }}-metrics
+  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-{{ .Values.calico.type }}-metrics
+  {{- with .Values.calico.serviceMonitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      app: {{ template "kube-prometheus-stack.name" . }}-{{ .Values.calico.type }}-metrics-svc
+      release: {{ $.Release.Name | quote }}
+  namespaceSelector:
+    matchNames:
+      - "kube-system"
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.calico.serviceMonitor.interval}}
+    interval: {{ .Values.calico.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.calico.serviceMonitor.proxyUrl }}
+    proxyUrl: {{ .Values.calico.serviceMonitor.proxyUrl}}
+    {{- end }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+{{- if .Values.calico.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ tpl (toYaml .Values.calico.serviceMonitor.metricRelabelings | indent 4) . }}
+{{- end }}
+{{- if .Values.calico.serviceMonitor.relabelings }}
+    relabelings:
+{{ tpl (toYaml .Values.calico.serviceMonitor.relabelings | indent 4) . }}
+{{- end }}
+{{- end }}

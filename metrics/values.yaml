@@ -1569,6 +1569,54 @@ kube-state-metrics:
 ## pingmeshExporter
 pingmeshExporter:
   enabled: true
+
+## calico CNI
+calico: 
+  enabled: true
+  ## felix or typha
+  type: "felix"
+  service:
+    port: 9091
+    targetPort: 9091
+    # selector:
+    #   k8s-app: calico-node  //typha: calico-typha  && Ffelix: calico-node
+  kubeControllersService:
+    port: 9094
+    targetPort: 9094
+    # selector:
+    #   k8s-app: calico-kube-controllers
+  serviceMonitor:
+    ## Scrape interval. If not set, the Prometheus default scrape interval is used.
+    ##
+    interval: ""
+
+    ## proxyUrl: URL of a proxy that should be used for scraping.
+    ##
+    proxyUrl: ""
+
+    ## MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
+    ##
+    metricRelabelings: []
+    # - action: keep
+    #   regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset).+'
+    #   sourceLabels: [__name__]
+
+    ## RelabelConfigs to apply to samples before scraping
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
+    ##
+    relabelings: []
+    # - sourceLabels: [__meta_kubernetes_pod_node_name]
+    #   separator: ;
+    #   regex: ^(.*)$
+    #   targetLabel: nodename
+    #   replacement: $1
+    #   action: replace
+
+    ## Additional labels
+    ##
+    additionalLabels: {}
+    #  foo: bar
       
 ## snmpExporter
 snmpExporter:

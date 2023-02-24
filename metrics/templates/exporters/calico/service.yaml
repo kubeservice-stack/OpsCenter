@@ -1,0 +1,49 @@
+{{- if .Values.calico.enabled }}
+{{- if eq .Values.calico.type "felix" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-{{ .Values.calico.type }}-metrics-svc
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-{{ .Values.calico.type }}-metrics-svc
+    jobLabel: calico{{ .Values.calico.type }}
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.calico.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.calico.service.targetPort }}
+  selector:
+    {{- if .Values.calico.service.selector }}
+{{ toYaml .Values.calico.service.selector | indent 4 }}
+    {{- else}}
+    k8s-app: calico-node
+    {{- end}}
+{{- else if eq .Values.calico.type "typha"}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-{{ .Values.calico.type }}-metrics-svc
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-{{ .Values.calico.type }}-metrics-svc
+    jobLabel: calico{{ .Values.calico.type }}
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.calico.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.calico.service.targetPort }}
+  selector:
+    {{- if .Values.calico.service.selector }}
+{{ toYaml .Values.calico.service.selector | indent 4 }}
+    {{- else}}
+    k8s-app: calico-typha
+    {{- end}}
+{{- end }}
+{{- end }}

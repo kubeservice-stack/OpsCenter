@@ -1,0 +1,24 @@
+{{- if .Values.calico.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-kube-controllers-metrics-svc
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-kube-controllers-metrics-svc
+    jobLabel: calicokubecontrollers
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.calico.kubeControllersService.port }}
+      protocol: TCP
+      targetPort: {{ .Values.calico.kubeControllersService.targetPort }}
+  selector:
+    {{- if .Values.calico.kubeControllersService.selector }}
+{{ toYaml .Values.calico.kubeControllersService.selector | indent 4 }}
+    {{- else}}
+    k8s-app: calico-kube-controllers
+    {{- end}}
+{{- end}}

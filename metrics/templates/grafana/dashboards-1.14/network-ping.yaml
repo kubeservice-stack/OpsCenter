@@ -1426,7 +1426,7 @@ data:
           "30d"
         ]
       },
-      "timezone": "",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": "Network / Ping",
       "uid": "pS6ZuGV7z",
       "version": 1,

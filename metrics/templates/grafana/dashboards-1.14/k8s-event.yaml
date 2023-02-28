@@ -44,7 +44,7 @@ data:
         ]
       },
       "description": "Kubernetes Events Dashboard  by CloudXiaobai",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 14003,
       "graphTooltip": 0,

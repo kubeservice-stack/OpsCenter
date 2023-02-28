@@ -44,7 +44,7 @@ data:
         ]
       },
       "description": "kubernetes APIServer Master Dashboard",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
       "id": 32,

@@ -7877,7 +7877,7 @@ data:
           "30d"
         ]
       },
-      "timezone": "utc",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": "Kubernetes / APIServer Master Dashboard",
       "uid": "xWJRfIcVk",
       "version": 1,

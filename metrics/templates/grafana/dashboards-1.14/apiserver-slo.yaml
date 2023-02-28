@@ -1141,7 +1141,7 @@ data:
           "30d"
         ]
       },
-      "timezone": "utc",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": "Kubernetes / API server(SLO)",
       "uid": "FglZoScVz",
       "version": 2,

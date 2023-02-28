@@ -45,7 +45,7 @@ data:
         ]
       },
       "description": "Felix dashboard is part of calico",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 12175,
       "graphTooltip": 0,

@@ -40,7 +40,7 @@ data:
         ]
       },
       "description": "A quick and simple dashboard for viewing how your horizontal pod autoscaler is doing.",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 10257,
       "graphTooltip": 0,

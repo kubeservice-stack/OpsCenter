@@ -47,7 +47,7 @@ data:
         ]
       },
       "description": "Prometheus Pingmesh Exporter Overview",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 14928,
       "graphTooltip": 0,

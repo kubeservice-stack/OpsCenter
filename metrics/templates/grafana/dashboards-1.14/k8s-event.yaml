@@ -1612,7 +1612,7 @@ data:
         "to": "now"
       },
       "timepicker": {},
-      "timezone": "",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": "Kubernetes / Events",
       "uid": "kU9VjusMk",
       "version": 4,

@@ -4171,7 +4171,7 @@ data:
           "30d"
         ]
       },
-      "timezone": "browser",
+      "timezone": "{{ .Values.grafana.defaultDashboardsTimezone }}",
       "title": "Node Exporter",
       "uid": "xfpJB9FGz",
       "version": 4,

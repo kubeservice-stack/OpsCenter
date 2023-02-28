@@ -1,0 +1,24 @@
+{{- if .Values.metricsServer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kube-prometheus-stack.fullname" . }}-metrics-server
+  labels:
+    app: {{ template "kube-prometheus-stack.name" . }}-metrics-server
+    jobLabel: metrics-server
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.metricsServer.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.metricsServer.service.targetPort }}
+  selector:
+    {{- if .Values.metricsServer.service.selector }}
+{{ toYaml .Values.metricsServer.service.selector | indent 4 }}
+    {{- else}}
+    k8s-app: metrics-server
+    {{- end}}
+{{- end }}

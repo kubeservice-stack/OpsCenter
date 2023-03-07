@@ -1,0 +1,288 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: clusterlogconfigs.loggie.io
+spec:
+  conversion:
+    strategy: None
+  group: loggie.io
+  names:
+    kind: ClusterLogConfig
+    listKind: ClusterLogConfigList
+    plural: clusterlogconfigs
+    shortNames:
+      - clgc
+    singular: clusterlogconfig
+  scope: Cluster
+  versions:
+  - name: v1beta1
+    additionalPrinterColumns:
+    - description: select pods
+      jsonPath: .spec.selector.labelSelector
+      name: Pod Selector
+      type: string  
+    - description: select nodes
+      jsonPath: .spec.selector.nodeSelector
+      name: Node Selector
+      type: string
+    - description: select cluster
+      jsonPath: .spec.selector.cluster
+      name: Cluster
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              pipeline:
+                properties:
+                  interceptorRef:
+                    type: string
+                  interceptors:
+                    type: string
+                  name:
+                    type: string
+                  sink:
+                    type: string
+                  sinkRef:
+                    type: string
+                  sources:
+                    type: string
+                type: object
+              selector:
+                properties:
+                  cluster:
+                    type: string
+                  labelSelector:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  nodeSelector:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  type:
+                    type: string
+                type: object
+            type: object
+          status:
+            properties:
+              message:
+                properties:
+                  lastTransitionTime:
+                    type: string
+                  observedGeneration:
+                    format: int64
+                    type: integer
+                  reason:
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: logconfigs.loggie.io
+spec:
+  conversion:
+    strategy: None
+  group: loggie.io
+  names:
+    kind: LogConfig
+    listKind: LogConfigList
+    plural: logconfigs
+    shortNames:
+      - lgc
+    singular: logconfig
+  scope: Namespaced
+  versions:
+    - name: v1beta1
+      additionalPrinterColumns:
+      - description: select pods
+        jsonPath: .spec.selector.labelSelector
+        name: Pod Selector
+        type: string
+      - jsonPath: .metadata.creationTimestamp
+        name: Age
+        type: date
+      schema:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                pipeline:
+                  properties:
+                    interceptorRef:
+                      type: string
+                    interceptors:
+                      type: string
+                    name:
+                      type: string
+                    sink:
+                      type: string
+                    sinkRef:
+                      type: string
+                    sources:
+                      type: string
+                  type: object
+                selector:
+                  properties:
+                    cluster:
+                      type: string
+                    labelSelector:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    nodeSelector:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type:
+                      type: string
+                  type: object
+              type: object
+            status:
+              properties:
+                message:
+                  properties:
+                    lastTransitionTime:
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      type: integer
+                    reason:
+                      type: string
+                  type: object
+              type: object
+          required:
+          - spec
+          type: object
+      served: true
+      storage: true
+      subresources:
+        status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: interceptors.loggie.io
+spec:
+  conversion:
+    strategy: None
+  group: loggie.io
+  names:
+    kind: Interceptor
+    listKind: InterceptorList
+    plural: interceptors
+    shortNames:
+      - icp
+    singular: interceptor
+  scope: Cluster
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              interceptors:
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: sinks.loggie.io
+spec:
+  conversion:
+    strategy: None
+  group: loggie.io
+  names:
+    kind: Sink
+    listKind: SinkList
+    plural: sinks
+    singular: sink
+  scope: Cluster
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              sink:
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+

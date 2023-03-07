@@ -1,0 +1,170 @@
+image: dongjiang1989/loggie:main
+
+resources:
+  limits:
+    cpu: 2
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+extraArgs: 
+#  log.level: debug
+  log.jsonFormat: true
+
+extraVolumeMounts:
+  - mountPath: /var/log/pods
+    name: podlogs
+  - mountPath: /var/lib/docker/containers
+    name: dockercontainers
+  - mountPath: /var/lib/kubelet/pods
+    name: kubelet
+
+extraVolumes:
+  - hostPath:
+      path: /var/log/pods
+      type: DirectoryOrCreate
+    name: podlogs
+  - hostPath:
+      path: /var/lib/docker/containers
+      type: DirectoryOrCreate
+    name: dockercontainers
+  - hostPath:
+      path: /var/lib/kubelet/pods
+      type: DirectoryOrCreate
+    name: kubelet
+
+extraEnvs: {}
+timezone: Asia/Shanghai
+
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+# podAntiAffinity:
+#   requiredDuringSchedulingIgnoredDuringExecution:
+#   - labelSelector:
+#       matchExpressions:
+#       - key: app
+#         operator: In
+#         values:
+#         - loggie
+#     topologyKey: "kubernetes.io/hostname"
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations:
+# - effect: NoExecute
+#   operator: Exists
+# - effect: NoSchedule
+#   operator: Exists
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+updateStrategy:
+  type: RollingUpdate
+
+## Agent mode, ignored when aggregator.enabled is true
+config:
+  loggie:
+    reload:
+      enabled: true
+      period: 10s
+    monitor:
+      logger:
+        period: 30s
+        enabled: true
+      listeners:
+        filesource:
+          period: 10s
+        filewatcher:
+          period: 5m
+        reload:
+          period: 10s
+        sink:
+          period: 10s
+        queue:
+          period: 10s
+        pipeline:
+          period: 10s
+
+    discovery:
+      enabled: true
+      kubernetes:
+        # Choose: docker or containerd
+        containerRuntime: containerd
+        # Collect log files inside the container from the root filesystem of the container, no need to mount the volume
+        rootFsCollectionEnabled: true
+        # Automatically parse and convert the wrapped container standard output format into the original log content
+        parseStdout: false
+        # If set to true, it means that the pipeline configuration generated does not contain specific Pod paths and meta information,
+        # and these data will be dynamically obtained by the file source, thereby reducing the number of configuration changes and reloads.
+        dynamicContainerLog: true
+        # Automatically add fields when selector.type is pod in logconfig/clusterlogconfig
+        typePodFields:
+          logconfig: "${_k8s.logconfig}"
+          namespace: "${_k8s.pod.namespace}"
+          nodename: "${_k8s.node.name}"
+          podname: "${_k8s.pod.name}"
+          containername: "${_k8s.pod.container.name}"
+        typeNodeFields:
+          nodename: "${_k8s.node.name}"
+          clusterlogconfig: "${_k8s.clusterlogconfig}"
+          os: "${_k8s.node.nodeInfo.osImage}"
+    defaults:
+      sink:
+        url: http://loki.monitoring:3100/loki/api/v1/push
+        type: loki
+    http:
+      enabled: true
+      port: 9196
+
+## Aggregator mode, by default is disabled
+aggregator:
+  enabled: false
+  replicas: 2
+  config:
+    loggie:
+      reload:
+        enabled: true
+        period: 10s
+      monitor:
+        logger:
+          period: 30s
+          enabled: true
+        listeners:
+          reload:
+            period: 10s
+          sink:
+            period: 10s
+      discovery:
+        enabled: true
+        kubernetes:
+          cluster: aggregator
+      http:
+        enabled: true
+        port: 9196
+
+
+servicePorts:
+  - name: monitor
+    port: 9196
+    targetPort: 9196
+#  - name: gprc
+#    port: 6066
+#    targetPort: 6066
+
+
+serviceMonitor:
+  enabled: true
+  ## Scrape interval. If not set, the Prometheus default scrape interval is used.
+  interval: 30s
+  relabelings: []
+  metricRelabelings: []
+

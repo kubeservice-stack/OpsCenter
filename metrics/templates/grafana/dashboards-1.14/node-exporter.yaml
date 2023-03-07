@@ -45,7 +45,7 @@ data:
         ]
       },
       "description": " Includes: CPU, memory, disk IO, network, temperature and other monitoring metrics",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 11074,
       "graphTooltip": 0,

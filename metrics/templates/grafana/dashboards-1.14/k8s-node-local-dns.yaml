@@ -40,7 +40,7 @@ data:
         ]
       },
       "description": "A dashboard for the CoreDNS DNS server which also exposes NodeLocal Cache  metrics.",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 11759,
       "graphTooltip": 0,
@@ -135,7 +135,7 @@ data:
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editable": true,
+          "editable": false,
           "error": false,
           "fieldConfig": {
             "defaults": {

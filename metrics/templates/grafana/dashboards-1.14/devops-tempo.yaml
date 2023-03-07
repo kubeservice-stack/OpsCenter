@@ -45,7 +45,7 @@ data:
         ]
       },
       "description": "Loki metrics via 2.0",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 13407,
       "graphTooltip": 0,

@@ -40,7 +40,7 @@ data:
         ]
       },
       "description": "A quick and simple dashboard for viewing how your horizontal pod autoscaler is doing.",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 10257,
       "graphTooltip": 0,
@@ -109,7 +109,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_status_desired_replicas{job=\"kube-state-metrics\", namespace=\"$namespace\", hpa=\"$hpa\"}",
+              "expr": "kube_horizontalpodautoscaler_status_desired_replicas{job=\"kube-state-metrics\", namespace=\"$namespace\", horizontalpodautoscaler=\"$hpa\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -186,7 +186,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_status_current_replicas{job=\"kube-state-metrics\", namespace=\"$namespace\", hpa=\"$hpa\"}",
+              "expr": "kube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\", namespace=\"$namespace\", horizontalpodautoscaler=\"$hpa\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -262,7 +262,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_spec_min_replicas{job=\"kube-state-metrics\",  namespace=\"$namespace\", hpa=\"$hpa\"}",
+              "expr": "kube_horizontalpodautoscaler_spec_min_replicas{job=\"kube-state-metrics\",  namespace=\"$namespace\", horizontalpodautoscaler=\"$hpa\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -338,7 +338,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_spec_max_replicas{job=\"kube-state-metrics\", hpa=\"$hpa\", namespace=\"$namespace\"}",
+              "expr": "kube_horizontalpodautoscaler_spec_max_replicas{job=\"kube-state-metrics\", horizontalpodautoscaler=\"$hpa\", namespace=\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -408,7 +408,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_status_desired_replicas{job=\"kube-state-metrics\", hpa=\"$hpa\",namespace=\"$namespace\"}",
+              "expr": "kube_horizontalpodautoscaler_status_desired_replicas{job=\"kube-state-metrics\", horizontalpodautoscaler=\"$hpa\",namespace=\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Desired",
@@ -418,7 +418,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_status_current_replicas{job=\"kube-state-metrics\", hpa=\"$hpa\",namespace=\"$namespace\"}",
+              "expr": "kube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\", horizontalpodautoscaler=\"$hpa\",namespace=\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Running",
@@ -428,7 +428,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_spec_max_replicas{job=\"kube-state-metrics\", hpa=\"$hpa\",namespace=\"$namespace\"}",
+              "expr": "kube_horizontalpodautoscaler_spec_max_replicas{job=\"kube-state-metrics\", horizontalpodautoscaler=\"$hpa\",namespace=\"$namespace\"}",
               "format": "time_series",
               "instant": false,
               "intervalFactor": 2,
@@ -439,7 +439,7 @@ data:
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "kube_hpa_spec_min_replicas{job=\"kube-state-metrics\", hpa=\"$hpa\",namespace=\"$namespace\"}",
+              "expr": "kube_horizontalpodautoscaler_spec_min_replicas{job=\"kube-state-metrics\", horizontalpodautoscaler=\"$hpa\",namespace=\"$namespace\"}",
               "format": "time_series",
               "instant": false,
               "intervalFactor": 2,
@@ -515,7 +515,7 @@ data:
               "type": "prometheus",
               "uid": "$datasource"
             },
-            "definition": "label_values(kube_hpa_metadata_generation{job=\"kube-state-metrics\"}, namespace)",
+            "definition": "label_values(kube_horizontalpodautoscaler_metadata_generation{job=\"kube-state-metrics\"}, namespace)",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
@@ -523,7 +523,7 @@ data:
             "name": "namespace",
             "options": [],
             "query": {
-              "query": "label_values(kube_hpa_metadata_generation{job=\"kube-state-metrics\"}, namespace)",
+              "query": "label_values(kube_horizontalpodautoscaler_metadata_generation{job=\"kube-state-metrics\"}, namespace)",
               "refId": "Prometheus-namespace-Variable-Query"
             },
             "refresh": 2,
@@ -546,7 +546,7 @@ data:
               "type": "prometheus",
               "uid": "$datasource"
             },
-            "definition": "label_values(kube_hpa_labels{job=\"kube-state-metrics\", namespace=\"$namespace\"}, hpa)",
+            "definition": "label_values(kube_horizontalpodautoscaler_labels{job=\"kube-state-metrics\", namespace=\"$namespace\"}, horizontalpodautoscaler)",
             "hide": 0,
             "includeAll": false,
             "label": "Name",
@@ -554,7 +554,7 @@ data:
             "name": "hpa",
             "options": [],
             "query": {
-              "query": "label_values(kube_hpa_labels{job=\"kube-state-metrics\", namespace=\"$namespace\"}, hpa)",
+              "query": "label_values(kube_horizontalpodautoscaler_labels{job=\"kube-state-metrics\", namespace=\"$namespace\"}, horizontalpodautoscaler)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,

@@ -31,7 +31,7 @@ data:
         ]
       },
       "description": "A dashboard for the CoreDNS DNS server with updated metrics for version 1.7.0+.  Based on the CoreDNS dashboard by buhay.",
-      "editable": true,
+      "editable": false,
       "gnetId": 12539,
       "graphTooltip": 0,
       "iteration": 1603798405693,

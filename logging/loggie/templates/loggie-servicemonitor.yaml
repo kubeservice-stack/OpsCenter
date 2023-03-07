@@ -7,7 +7,9 @@ metadata:
   labels:
     app: loggie
     instance: {{ template "loggie.name" . }}
+    release: metrics
 spec:
+  jobLabel: jobLabel
   endpoints:
   - port: monitor
     {{- if .Values.serviceMonitor.interval }}

@@ -1658,7 +1658,7 @@ data:
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editable": true,
+          "editable": false,
           "error": false,
           "fieldConfig": {
             "defaults": {

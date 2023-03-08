@@ -34,7 +34,7 @@ spec:
     relabelings:
     {{- toYaml .Values.serviceMonitor.relabelings | nindent 4 }}
     {{- end }}
-  jobLabel: "{{ .Release.Name }}"
+  jobLabel: jobLabel
   selector:
     matchLabels:
       {{- include "grafana.selectorLabels" . | nindent 8 }}

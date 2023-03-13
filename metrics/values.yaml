@@ -24,7 +24,8 @@ fullnameOverride: ""
 
 ## Labels to apply to all resources
 ##
-commonLabels: {}
+commonLabels: 
+# cluster: dev
 # scmhash: abc123
 # myLabel: aakkmd
 
@@ -1661,6 +1662,10 @@ calico:
     ##
     additionalLabels: {}
     #  foo: bar
+
+## cilium CNI
+cilium:
+  enabled: false
       
 ## snmpExporter
 snmpExporter:

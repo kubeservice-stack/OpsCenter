@@ -1737,6 +1737,12 @@ prometheus-node-exporter:
 ##
 prometheusOperator:
   enabled: true
+  
+  ## livenessProbe
+  # livenessProbe: {}
+  
+  ## readinessProbe
+  # readinessProbe: {}
 
   ## Prometheus-Operator v0.39.0 and later support TLS natively.
   ##

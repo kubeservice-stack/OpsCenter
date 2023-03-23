@@ -1784,6 +1784,12 @@ prometheusOperator:
         sha: ""
         pullPolicy: IfNotPresent
       resources: {}
+      ## livenessProbe
+      # livenessProbe: {}
+  
+      ## readinessProbe
+      # readinessProbe: {}
+
       ## Provide a priority class name to the webhook patching job
       ##
       priorityClassName: ""

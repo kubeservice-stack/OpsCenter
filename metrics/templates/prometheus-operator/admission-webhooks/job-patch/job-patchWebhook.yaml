@@ -52,6 +52,14 @@ spec:
           {{- end }}
           resources:
 {{ toYaml .Values.prometheusOperator.admissionWebhooks.patch.resources | indent 12 }}
+{{- if .Values.prometheusOperator.admissionWebhooks.patch.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.prometheusOperator.admissionWebhooks.patch.livenessProbe | indent 12 }}
+{{- end }}
+{{- if .Values.prometheusOperator.admissionWebhooks.patch.readinessProbe }}
+          readinessProbe:
+{{ toYaml .Values.prometheusOperator.admissionWebhooks.patch.readinessProbe | indent 12 }}
+{{- end }}
       restartPolicy: OnFailure
       serviceAccountName: {{ template "kube-prometheus-stack.fullname" . }}-admission
       {{- with .Values.prometheusOperator.admissionWebhooks.patch.nodeSelector }}

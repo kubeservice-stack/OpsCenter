@@ -584,12 +584,6 @@ alertmanager:
     resources: {}
     # requests:
     #   memory: 400Mi
-    
-    ## livenessProbe
-    # livenessProbe: {}
-  
-    ## readinessProbe
-    # readinessProbe: {}
 
     ## Pod anti-affinity can prevent the scheduler from placing Prometheus replicas on the same node.
     ## The default value "soft" means that the scheduler should *prefer* to not schedule two replica pods onto the same node but no guarantee is provided.
@@ -667,6 +661,8 @@ alertmanager:
     #     name: oauth-proxy
     #     protocol: TCP
     #   resources: {}
+    #   livenessProbe: {}  
+    #   readinessProbe: {}
 
     # Additional volumes on the output StatefulSet definition.
     volumes: []
@@ -2057,7 +2053,7 @@ prometheusOperator:
   ##
   image:
     repository: dongjiang1989/prometheus-operator
-    tag: v0.60.1
+    tag: v0.60.3
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -2074,7 +2070,7 @@ prometheusOperator:
   prometheusConfigReloader:
     image:
       repository: dongjiang1989/prometheus-config-reloader
-      tag: v0.60.1
+      tag: v0.60.3
       sha: ""
 
     # resource config for prometheusConfigReloader
@@ -2808,12 +2804,6 @@ prometheus:
     # requests:
     #   memory: 400Mi
     
-    ## livenessProbe
-    # livenessProbe: {}
-  
-    ## readinessProbe
-    # readinessProbe: {}
-
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
     ##
@@ -2996,6 +2986,8 @@ prometheus:
     #     name: oauth-proxy
     #     protocol: TCP
     #   resources: {}
+    #   livenessProbe: {}
+    #   readinessProbe: {}
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus

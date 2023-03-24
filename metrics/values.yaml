@@ -2053,7 +2053,7 @@ prometheusOperator:
   ##
   image:
     repository: dongjiang1989/prometheus-operator
-    tag: v0.60.2
+    tag: v0.60.3
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -2070,7 +2070,7 @@ prometheusOperator:
   prometheusConfigReloader:
     image:
       repository: dongjiang1989/prometheus-config-reloader
-      tag: v0.60.2
+      tag: v0.60.3
       sha: ""
 
     # resource config for prometheusConfigReloader

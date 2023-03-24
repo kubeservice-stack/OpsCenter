@@ -584,6 +584,12 @@ alertmanager:
     resources: {}
     # requests:
     #   memory: 400Mi
+    
+    ## livenessProbe
+    # livenessProbe: {}
+  
+    ## readinessProbe
+    # readinessProbe: {}
 
     ## Pod anti-affinity can prevent the scheduler from placing Prometheus replicas on the same node.
     ## The default value "soft" means that the scheduler should *prefer* to not schedule two replica pods onto the same node but no guarantee is provided.
@@ -1737,6 +1743,12 @@ prometheus-node-exporter:
 ##
 prometheusOperator:
   enabled: true
+  
+  ## livenessProbe
+  # livenessProbe: {}
+  
+  ## readinessProbe
+  # readinessProbe: {}
 
   ## Prometheus-Operator v0.39.0 and later support TLS natively.
   ##
@@ -1772,6 +1784,12 @@ prometheusOperator:
         sha: ""
         pullPolicy: IfNotPresent
       resources: {}
+      ## livenessProbe
+      # livenessProbe: {}
+  
+      ## readinessProbe
+      # readinessProbe: {}
+
       ## Provide a priority class name to the webhook patching job
       ##
       priorityClassName: ""
@@ -2789,6 +2807,12 @@ prometheus:
     resources: {}
     # requests:
     #   memory: 400Mi
+    
+    ## livenessProbe
+    # livenessProbe: {}
+  
+    ## readinessProbe
+    # readinessProbe: {}
 
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md

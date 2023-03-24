@@ -133,6 +133,14 @@ spec:
             - name: tls-secret
               mountPath: /cert
               readOnly: true
+{{- if .Values.prometheusOperator.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.prometheusOperator.livenessProbe | indent 12 }}
+{{- end }}
+{{- if .Values.prometheusOperator.readinessProbe }}
+          readinessProbe:
+{{ toYaml .Values.prometheusOperator.readinessProbe | indent 12 }}
+{{- end }}
       volumes:
         - name: tls-secret
           secret:

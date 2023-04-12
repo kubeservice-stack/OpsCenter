@@ -1,6 +1,7 @@
 # Observability-stack
 
 [![Lint and Test Charts](https://github.com/kubeservice-stack/OpsCenter/actions/workflows/lint.yml/badge.svg)](https://github.com/kubeservice-stack/OpsCenter/actions/workflows/lint.yml)
+[![Releases downloads](https://img.shields.io/github/downloads/kubeservice-stack/OpsCenter/total.svg)](https://github.com/kubeservice-stack/OpsCenter/releases)
 
 Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括 
 

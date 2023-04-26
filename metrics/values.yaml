@@ -1672,6 +1672,13 @@ cilium:
 ## snmpExporter
 snmpExporter:
   enabled: true
+  
+## eBPFExporter
+eBPFExporter:
+  enabled: true
+
+kubeservice-ebpf-exporter:
+  namespaceOverride: "monitoring"
 
 ## Deploy node exporter as a daemonset to all nodes
 ##

@@ -2089,7 +2089,7 @@ prometheusOperator:
         cpu: 200m
         memory: 50Mi
     
-    enableProbe: true
+    enableProbe: false
 
   ## Thanos side-car image when configured
   ##

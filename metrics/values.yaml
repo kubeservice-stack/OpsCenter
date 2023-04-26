@@ -1672,6 +1672,13 @@ cilium:
 ## snmpExporter
 snmpExporter:
   enabled: true
+  
+## eBPFExporter
+eBPFExporter:
+  enabled: true
+
+kubeservice-ebpf-exporter:
+  namespaceOverride: "monitoring"
 
 ## Deploy node exporter as a daemonset to all nodes
 ##
@@ -2082,7 +2089,7 @@ prometheusOperator:
         cpu: 200m
         memory: 50Mi
     
-    enableProbe: true
+    enableProbe: false
 
   ## Thanos side-car image when configured
   ##

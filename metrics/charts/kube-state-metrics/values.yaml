@@ -2,7 +2,7 @@
 prometheusScrape: true
 image:
   repository: dongjiang1989/kube-state-metrics
-  tag: 2.6.0
+  tag: v2.6.0
   sha: ""
   pullPolicy: IfNotPresent
 

@@ -23,10 +23,10 @@ metadata:
 spec:
   groups:
   - name: cpu_mem_usage_active
-    interval: 30s
+    interval: 1m
     rules:
     - record: cpu_usage_active
-      expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[30s])) * 100)
+      expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
     - record: mem_usage_active
       expr: 100*(1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes)
   - name: cpu-usage-5m

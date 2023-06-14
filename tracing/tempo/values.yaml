@@ -224,6 +224,9 @@ service:
   type: ClusterIP
   annotations: {}
   labels: {}
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
 
 serviceMonitor:
   enabled: true

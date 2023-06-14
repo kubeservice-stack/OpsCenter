@@ -21,6 +21,11 @@ items:
 {{ toYaml $serviceValues.annotations | indent 8 }}
       {{- end }}
     spec:
+      {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+      {{- if .Values.global.dualStack }}
+      {{ toYaml .Values.global.dualStack | indent 6 }}
+      {{- end }}
+      {{- end }}
       {{- if $serviceValues.clusterIP }}
       clusterIP: {{ $serviceValues.clusterIP }}
       {{- end }}

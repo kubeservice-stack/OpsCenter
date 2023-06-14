@@ -7,9 +7,14 @@ metadata:
   name: {{ template "loggie.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+  ipFamilies:
+{{ toYaml .Values.service.ipFamilies | indent 2 }}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+{{- end }}
   ports:
-  {{- if .Values.servicePorts }}
-    {{ toYaml .Values.servicePorts | nindent 4}}
+  {{- if .Values.service.servicePorts }}
+    {{ toYaml .Values.service.servicePorts | nindent 4}}
   {{- end }}
   selector:
     app: loggie

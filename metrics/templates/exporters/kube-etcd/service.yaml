@@ -9,6 +9,11 @@ metadata:
 {{ include "kube-prometheus-stack.labels" . | indent 4 }}
   namespace: kube-system
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+{{- if .Values.global.dualStack }}
+{{ toYaml .Values.global.dualStack | indent 2 }}
+{{- end }}
+{{- end }}
   clusterIP: None
   ports:
     - name: http-metrics

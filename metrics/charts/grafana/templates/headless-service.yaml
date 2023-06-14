@@ -11,6 +11,11 @@ metadata:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+  ipFamilies:
+{{ toYaml .Values.service.ipFamilies | indent 2 }}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+{{- end }}
   clusterIP: None
   selector:
     {{- include "grafana.selectorLabels" . | nindent 4 }}

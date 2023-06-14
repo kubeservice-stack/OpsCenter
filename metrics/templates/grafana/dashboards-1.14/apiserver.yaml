@@ -38,7 +38,15 @@ data:
         "hideControls": false,
         "id": null,
         "links": [
-
+          {
+            "$$hashKey": "object:2302",
+            "asDropdown": true,
+            "icon": "external link",
+            "tags": [],
+            "targetBlank": true,
+            "title": "",
+            "type": "dashboards"
+          }
         ],
         "panels": [
             {

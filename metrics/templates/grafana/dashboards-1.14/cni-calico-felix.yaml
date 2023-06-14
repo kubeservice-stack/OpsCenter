@@ -60,6 +60,15 @@ data:
           "tooltip": "Comprehensive tutorial on how to use this dashboard.",
           "type": "link",
           "url": "https://docs.projectcalico.org/master/maintenance/monitor-component-visual"
+        },
+        {
+          "$$hashKey": "object:2302",
+          "asDropdown": true,
+          "icon": "external link",
+          "tags": [],
+          "targetBlank": true,
+          "title": "",
+          "type": "dashboards"
         }
       ],
       "liveNow": false,

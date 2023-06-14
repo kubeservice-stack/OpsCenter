@@ -48,7 +48,17 @@ data:
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
       "id": 42,
-      "links": [],
+      "links": [
+        {
+          "$$hashKey": "object:2302",
+          "asDropdown": true,
+          "icon": "external link",
+          "tags": [],
+          "targetBlank": true,
+          "title": "",
+          "type": "dashboards"
+        }
+      ],
       "liveNow": false,
       "panels": [
         {

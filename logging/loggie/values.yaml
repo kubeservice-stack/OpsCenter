@@ -151,14 +151,17 @@ aggregator:
         enabled: true
         port: 9196
 
-
-servicePorts:
-  - name: monitor
-    port: 9196
-    targetPort: 9196
-#  - name: gprc
-#    port: 6066
-#    targetPort: 6066
+service:
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  servicePorts:
+    - name: monitor
+      port: 9196
+      targetPort: 9196
+#    - name: gprc
+#      port: 6066
+#      targetPort: 6066
 
 
 serviceMonitor:

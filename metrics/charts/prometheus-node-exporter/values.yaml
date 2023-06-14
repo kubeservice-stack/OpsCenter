@@ -20,6 +20,9 @@ service:
   listenOnAllInterfaces: true
   annotations:
     prometheus.io/scrape: "true"
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
 
 # Additional environment variables that will be passed to the daemonset
 env: {}

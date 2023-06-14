@@ -11,6 +11,11 @@ metadata:
   annotations:
     {{- toYaml .Values.service.annotations | nindent 4 }}
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+  ipFamilies:
+{{ toYaml .Values.service.ipFamilies | indent 2 }}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+{{- end }}
 {{- if .Values.service.loadBalancerSourceRanges }}
    externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
 {{- end }}

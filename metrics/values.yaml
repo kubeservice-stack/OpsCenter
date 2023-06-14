@@ -131,6 +131,10 @@ global:
   # - name: "image-pull-secret"
   # or
   # - "image-pull-secret"
+  dualStack:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
 
 ## Configuration for alertmanager
 ## ref: https://prometheus.io/docs/alerting/alertmanager/
@@ -856,6 +860,9 @@ grafana:
   ##
   service:
     portName: http-web
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
 
   serviceMonitor:
     # If true, a ServiceMonitor CRD is created for a prometheus operator
@@ -1610,6 +1617,10 @@ kube-state-metrics:
       #   targetLabel: nodename
       #   replacement: $1
       #   action: replace
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
 
   selfMonitor:
     enabled: false
@@ -1680,12 +1691,32 @@ eBPFExporter:
 
 kubeservice-ebpf-exporter:
   namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
 
 ## Deploy node exporter as a daemonset to all nodes
 ##
 nodeExporter:
   enabled: true
 
+## Configuration for prometheus-pingmesh-exporter subchart
+##
+prometheus-pingmesh-exporter:
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+
+## Configuration for prometheus-snmp-exporter subchart
+##
+prometheus-snmp-exporter:
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:
@@ -1700,6 +1731,9 @@ prometheus-node-exporter:
     - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
   service:
     portName: http-metrics
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
   prometheus:
     monitor:
       enabled: true

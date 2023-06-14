@@ -50,6 +50,9 @@ service:
   loadBalancerSourceRanges: []
   clusterIP: ""
   annotations: {}
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
 
 ## Additional labels to add to all resources
 customLabels: {}

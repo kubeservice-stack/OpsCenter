@@ -49,7 +49,17 @@ data:
       "gnetId": 15443,
       "graphTooltip": 1,
       "id": 41,
-      "links": [],
+      "links": [
+        {
+          "$$hashKey": "object:2302",
+          "asDropdown": true,
+          "icon": "external link",
+          "tags": [],
+          "targetBlank": true,
+          "title": "",
+          "type": "dashboards"
+        }
+      ],
       "liveNow": false,
       "panels": [
         {

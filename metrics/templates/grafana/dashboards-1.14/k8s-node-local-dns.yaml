@@ -53,6 +53,15 @@ data:
           "title": "CoreDNS.io",
           "type": "link",
           "url": "https://coredns.io"
+        },
+        {
+          "$$hashKey": "object:2302",
+          "asDropdown": true,
+          "icon": "external link",
+          "tags": [],
+          "targetBlank": true,
+          "title": "",
+          "type": "dashboards"
         }
       ],
       "liveNow": false,

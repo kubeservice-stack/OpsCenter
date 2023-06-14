@@ -55,6 +55,7 @@ defaultRules:
     kubeSchedulerAlerting: true
     kubeSchedulerRecording: true
     kubeStateMetrics: true
+    metricsServer: true
     network: true
     node: true
     nodeExporterAlerting: true

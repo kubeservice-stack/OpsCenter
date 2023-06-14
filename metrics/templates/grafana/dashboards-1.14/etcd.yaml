@@ -28,7 +28,17 @@ data:
         "editable": false,
         "gnetId": null,
         "hideControls": false,
-        "links": [],
+        "links": [
+          {
+            "$$hashKey": "object:2302",
+            "asDropdown": true,
+            "icon": "external link",
+            "tags": [],
+            "targetBlank": true,
+            "title": "",
+            "type": "dashboards"
+          }
+        ],
         "refresh": "10s",
         "rows": [
             {

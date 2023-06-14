@@ -31,7 +31,15 @@ data:
         "graphTooltip": 0,
         "hideControls": false,
         "links": [
-
+          {
+            "$$hashKey": "object:2302",
+            "asDropdown": true,
+            "icon": "external link",
+            "tags": [],
+            "targetBlank": true,
+            "title": "",
+            "type": "dashboards"
+          }
         ],
         "refresh": "10s",
         "rows": [

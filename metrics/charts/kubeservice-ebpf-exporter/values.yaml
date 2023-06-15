@@ -60,6 +60,10 @@ service:
   port: 80
   # Add service annotations.
   annotations: {}
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+
 # Specify taint tolerations.
 tolerations:
   - effect: NoSchedule

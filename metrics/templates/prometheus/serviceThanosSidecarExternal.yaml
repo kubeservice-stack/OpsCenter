@@ -14,6 +14,11 @@ metadata:
 {{ toYaml .Values.prometheus.thanosServiceExternal.annotations | indent 4 }}
 {{- end }}
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+{{- if .Values.global.dualStack }}
+{{ toYaml .Values.global.dualStack | indent 2 }}
+{{- end }}
+{{- end }}
   type: {{ .Values.prometheus.thanosServiceExternal.type }}
 {{- if .Values.prometheus.thanosServiceExternal.loadBalancerIP }}
   loadBalancerIP: {{ .Values.prometheus.thanosServiceExternal.loadBalancerIP }}

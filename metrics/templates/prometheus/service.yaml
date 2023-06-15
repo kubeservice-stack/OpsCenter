@@ -16,6 +16,11 @@ metadata:
 {{ toYaml .Values.prometheus.service.annotations | indent 4 }}
 {{- end }}
 spec:
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+{{- if .Values.global.dualStack }}
+{{ toYaml .Values.global.dualStack | indent 2 }}
+{{- end }}
+{{- end }}
 {{- if .Values.prometheus.service.clusterIP }}
   clusterIP: {{ .Values.prometheus.service.clusterIP }}
 {{- end }}

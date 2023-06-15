@@ -70,7 +70,7 @@ $ helm uninstall metrics --namespace monitoring  ## 卸载
 
 ```bash
 $ helm template metrics . --namespace monitoring > metrics-allinone.yaml
-$ kubectl apply -f metrics-allinone.yaml
+$ kubectl create -f metrics-allinone.yaml
 ```
 
 ### logging 部署

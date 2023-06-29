@@ -6,7 +6,7 @@ annotations:
       url: https://github.com/prometheus-operator/kube-prometheus
   artifacthub.io/operator: "true"
 apiVersion: v2
-appVersion: 0.60.1
+appVersion: 0.60.2
 dependencies:
 - condition: kubeStateMetrics.enabled
   name: kube-state-metrics
@@ -59,4 +59,4 @@ sources:
 - https://github.com/prometheus-community/helm-charts
 - https://github.com/prometheus-operator/kube-prometheus
 type: application
-version: 41.6.1
+version: 41.6.2

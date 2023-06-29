@@ -22,8 +22,8 @@ dependencies:
   version: 1.2.1
 - condition: pingmeshExporter.enabled
   name: prometheus-pingmesh-exporter
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 1.0.0
+  repository: https://kubeservice-stack.github.io/kubservice-charts/
+  version: 1.1.1
 - condition: grafana.enabled
   name: grafana
   repository: https://grafana.github.io/helm-charts

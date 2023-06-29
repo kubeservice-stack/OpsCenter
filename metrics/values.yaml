@@ -1680,7 +1680,7 @@ calico:
 ## cilium CNI
 cilium:
   enabled: false
- 
+
 ## snmpExporter
 snmpExporter:
   enabled: true
@@ -1784,7 +1784,7 @@ prometheusOperator:
 
   ## livenessProbe
   # livenessProbe: {}
-  
+
   ## readinessProbe
   # readinessProbe: {}
 

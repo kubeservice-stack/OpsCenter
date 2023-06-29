@@ -2,7 +2,7 @@
 remote: origin
 target-branch: master
 chart-dirs:
-  - metrics
+  - .
   - tracing
   - logging
 chart-repos:

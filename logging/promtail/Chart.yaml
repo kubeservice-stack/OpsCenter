@@ -5,9 +5,8 @@ description: Promtail is an agent which ships the contents of local logs to a Lo
 home: https://grafana.com/loki
 icon: https://raw.githubusercontent.com/grafana/loki/master/docs/sources/logo.png
 maintainers:
-- email: lokiproject@googlegroups.com
-  name: Loki Maintainers
-- name: unguiculus
+- email: unguiculus@gmail.com
+  name: unguiculus
 name: promtail
 sources:
 - https://github.com/grafana/loki

@@ -6,7 +6,7 @@ annotations:
       url: https://github.com/prometheus-operator/kube-prometheus
   artifacthub.io/operator: "true"
 apiVersion: v2
-appVersion: 0.60.2
+appVersion: 0.60.3
 dependencies:
 - condition: kubeStateMetrics.enabled
   name: kube-state-metrics
@@ -22,8 +22,12 @@ dependencies:
   version: 1.2.1
 - condition: pingmeshExporter.enabled
   name: prometheus-pingmesh-exporter
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 1.0.0
+  repository: https://kubeservice-stack.github.io/kubservice-charts/
+  version: 1.*.*
+- condition: eBPFExporter.enabled
+  name: kubeservice-ebpf-exporter
+  repository: https://kubeservice-stack.github.io/kubservice-charts/
+  version: 1.*.*
 - condition: grafana.enabled
   name: grafana
   repository: https://grafana.github.io/helm-charts
@@ -59,4 +63,4 @@ sources:
 - https://github.com/prometheus-community/helm-charts
 - https://github.com/prometheus-operator/kube-prometheus
 type: application
-version: 41.6.2
+version: 41.6.3

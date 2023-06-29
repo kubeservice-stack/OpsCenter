@@ -71,7 +71,7 @@ config:
     max_concurrent: 2048
 
   frontend:
-    max_outstanding_per_tenant: 4096 
+    max_outstanding_per_tenant: 4096
     compress_responses: true
 
   ingester:
@@ -82,31 +82,31 @@ config:
     chunk_target_size: 1.572864e+06
     flush_op_timeout: 30s
     lifecycler:
-        heartbeat_period: 10s
-        interface_names:
-          - eth0
-          - en0
-        join_after: 30s
-        num_tokens: 512
-        ring:
-            heartbeat_timeout: 10m
-            kvstore:
-                store: memberlist
-                prefix: "collectors/"
-            replication_factor: 1
+      heartbeat_period: 10s
+      interface_names:
+        - eth0
+        - en0
+      join_after: 30s
+      num_tokens: 512
+      ring:
+        heartbeat_timeout: 10m
+        kvstore:
+          store: memberlist
+          prefix: "collectors/"
+        replication_factor: 1
     max_transfer_retries: 0
     sync_min_utilization: 0.2
     sync_period: 15m
     wal:
-        dir: /data/loki/wal
-        enabled: true
-        replay_memory_ceiling: 1GB
+      dir: /data/loki/wal
+      enabled: true
+      replay_memory_ceiling: 1GB
 
   distributor:
     ring:
-        kvstore:
-            store: memberlist
-            prefix: "collectors/"
+      kvstore:
+        store: memberlist
+        prefix: "collectors/"
       ## Different ring configs can be used. E.g. Consul
       # ring:
       #   store: consul
@@ -144,11 +144,11 @@ config:
     configs:
       - from: "2022-11-01"
         index:
-            period: 24h
-            prefix: loki_boltdb_shipper_index_
+          period: 24h
+          prefix: loki_boltdb_shipper_index_
         chunks:
-            period: 24h
-            prefix: loki_boltdb_shipper_chunks_
+          period: 24h
+          prefix: loki_boltdb_shipper_chunks_
         object_store: s3
         schema: v11
         store: boltdb-shipper
@@ -166,36 +166,36 @@ config:
     log_level: warn
   storage_config:
     boltdb_shipper:
-        active_index_directory: /data/www/data/loki/index
-        cache_location: /data/www/cache/loki/boltdb-cache
-        shared_store: s3
-        cache_ttl: 24h
+      active_index_directory: /data/www/data/loki/index
+      cache_location: /data/www/cache/loki/boltdb-cache
+      shared_store: s3
+      cache_ttl: 24h
     aws:
-        bucketnames: dongjiang-test-loki
-        endpoint: eos-zhengzhou-1-internal.cmecloud.cn
-        region: eos-zhengzhou-1
-        access_key_id: 16OOFFC1SACJXDBYAPN0
-        secret_access_key: IHCc6jUfysnKYdyyCQf5iDM1lxUMmJ4pA58rHMof
-        insecure: true
-        sse_encryption: false
-        http_config:
-            idle_conn_timeout: 90s
-            response_header_timeout: 0s
-            insecure_skip_verify: false
-        s3forcepathstyle: false
+      bucketnames: dongjiang-test-loki
+      endpoint: eos-zhengzhou-1-internal.cmecloud.cn
+      region: eos-zhengzhou-1
+      access_key_id: 16OOFFC1SACJXDBYAPN0
+      secret_access_key: IHCc6jUfysnKYdyyCQf5iDM1lxUMmJ4pA58rHMof
+      insecure: true
+      sse_encryption: false
+      http_config:
+        idle_conn_timeout: 90s
+        response_header_timeout: 0s
+        insecure_skip_verify: false
+      s3forcepathstyle: false
     index_queries_cache_config:
-        enable_fifocache: true
-        fifocache:
-            max_size_bytes: 1GB
-            max_size_items: 0
-            validity: 0s
+      enable_fifocache: true
+      fifocache:
+        max_size_bytes: 1GB
+        max_size_items: 0
+        validity: 0s
   chunk_store_config:
     chunk_cache_config:
-        enable_fifocache: true
-        fifocache:
-            max_size_bytes: 1GB
-            max_size_items: 0
-            validity: 0s  
+      enable_fifocache: true
+      fifocache:
+        max_size_bytes: 1GB
+        max_size_items: 0
+        validity: 0s
   table_manager:
     creation_grace_period: 3h
     poll_interval: 10m
@@ -287,7 +287,7 @@ readinessProbe:
 
 replicas: 1
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 1Gi

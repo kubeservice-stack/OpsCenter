@@ -85,7 +85,7 @@ readinessProbe:
   timeoutSeconds: 1
 
 # -- Resource requests and limits
-resources: 
+resources:
   limits:
     cpu: 512m
     memory: 512Mi
@@ -163,7 +163,7 @@ defaultVolumes:
   - name: cron
     hostPath:
       path: /var/log/cron
-      
+
 # -- Default volume mounts. Corresponds to `volumes`.
 # @default -- See `values.yaml`
 defaultVolumeMounts:
@@ -197,7 +197,7 @@ extraVolumes:
       path: /etc/localtime
 
 # Extra volume mounts together. Corresponds to `extraVolumes`.
-extraVolumeMounts: 
+extraVolumeMounts:
   - name: host-time
     mountPath: /etc/localtime
 

@@ -73,7 +73,6 @@ Return the appropriate apiVersion for rbac.
 {{- end -}}
 {{- end -}}
 
-
 {{- define "prometheus-pingmesh-exporter.namespace" -}}
   {{- if .Values.namespaceOverride -}}
     {{- .Values.namespaceOverride -}}

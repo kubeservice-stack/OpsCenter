@@ -3,7 +3,7 @@ apiVersion: v1
 kind: {{ if .Values.secretConfig -}} Secret {{- else -}} ConfigMap {{- end }}
 metadata:
   name: {{ template "prometheus-pingmesh-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ template "prometheus-pingmesh-exporter.namespace" . }}
   labels:
     {{- include "prometheus-pingmesh-exporter.labels" . | nindent 4 }}
 {{ if .Values.secretConfig -}} stringData: {{- else -}} data: {{- end }}

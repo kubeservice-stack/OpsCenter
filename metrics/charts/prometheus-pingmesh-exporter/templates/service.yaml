@@ -6,14 +6,14 @@ metadata:
     {{- toYaml .Values.service.annotations | nindent 4 }}
 {{- end }}
   name: {{ include "prometheus-pingmesh-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "prometheus-pingmesh-exporter.labels" . | nindent 4 }}
 {{- if .Values.service.labels }}
 {{ toYaml .Values.service.labels | indent 4 }}
 {{- end }}
 spec:
-{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+{{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

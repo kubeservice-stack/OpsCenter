@@ -1,5 +1,5 @@
 
-
+1， 配置使用nvidia runtime
 #use docker
 /etc/docker/daemon.json
 
@@ -48,7 +48,7 @@ version = 2
             ShimCgroup = ""
             SystemdCgroup = false
 
-
+2, 部署
 cd  dcgm-exporter/deployment
 
 kubectl create ns monitoing

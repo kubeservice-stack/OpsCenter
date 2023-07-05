@@ -24,7 +24,7 @@ fullnameOverride: ""
 
 ## Labels to apply to all resources
 ##
-commonLabels: 
+commonLabels:
 # cluster: dev
 # scmhash: abc123
 # myLabel: aakkmd
@@ -666,7 +666,7 @@ alertmanager:
     #     name: oauth-proxy
     #     protocol: TCP
     #   resources: {}
-    #   livenessProbe: {}  
+    #   livenessProbe: {}
     #   readinessProbe: {}
 
     # Additional volumes on the output StatefulSet definition.
@@ -877,7 +877,7 @@ grafana:
     #  namespace: monitoring  (defaults to use the namespace this chart is deployed to)
 
     # labels for the ServiceMonitor
-    labels: 
+    labels:
       release: metrics
 
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -1183,7 +1183,7 @@ kubeControllerManager:
     ##
     additionalLabels: {}
     #  foo: bar
-    
+
 ## Component scraping Metrics Server.
 metricsServer:
   enabled: true
@@ -1265,7 +1265,7 @@ nodeLocalDns:
     ##
     additionalLabels: {}
     #  foo: bar
-  
+
 ## Component scraping coreDns. Use either this or kubeDns
 ##
 coreDns:
@@ -1624,13 +1624,13 @@ kube-state-metrics:
 
   selfMonitor:
     enabled: false
-    
+
 ## pingmeshExporter
 pingmeshExporter:
   enabled: true
 
 ## calico CNI
-calico: 
+calico:
   enabled: true
   ## felix or typha
   type: "felix"
@@ -1681,24 +1681,10 @@ calico:
 cilium:
   enabled: false
 
-## dcgmeEporter
-dcgmeEporter:
-  enabled: true
-
-## Configuration for dcgm-exporter subchart
-##
-dcgm-exporter:
-  namespaceOverride: "monitoring"
-  service:
-    ipFamilies:
-    - IPv4
-    ipFamilyPolicy: SingleStack
-
-      
 ## snmpExporter
 snmpExporter:
   enabled: true
-  
+
 ## eBPFExporter
 eBPFExporter:
   enabled: true
@@ -1730,7 +1716,7 @@ prometheus-snmp-exporter:
     ipFamilies:
     - IPv4
     ipFamilyPolicy: SingleStack
-    
+
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:
@@ -1795,10 +1781,10 @@ prometheus-node-exporter:
 ##
 prometheusOperator:
   enabled: true
-  
+
   ## livenessProbe
   # livenessProbe: {}
-  
+
   ## readinessProbe
   # readinessProbe: {}
 
@@ -1838,7 +1824,7 @@ prometheusOperator:
       resources: {}
       ## livenessProbe
       # livenessProbe: {}
-  
+
       ## readinessProbe
       # readinessProbe: {}
 
@@ -2137,7 +2123,7 @@ prometheusOperator:
       limits:
         cpu: 200m
         memory: 50Mi
-    
+
     enableProbe: false
 
   ## Thanos side-car image when configured
@@ -2861,7 +2847,7 @@ prometheus:
     resources: {}
     # requests:
     #   memory: 400Mi
-    
+
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
     ##

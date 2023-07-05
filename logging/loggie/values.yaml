@@ -9,7 +9,7 @@ resources:
     memory: 100Mi
 
 extraArgs: 
-#  log.level: debug
+  # log.level: debug
   log.jsonFormat: true
 
 extraVolumeMounts:

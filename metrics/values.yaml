@@ -1680,6 +1680,20 @@ calico:
 ## cilium CNI
 cilium:
   enabled: false
+
+## dcgmeEporter
+dcgmeEporter:
+  enabled: true
+
+## Configuration for dcgm-exporter subchart
+##
+dcgm-exporter:
+  namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+
       
 ## snmpExporter
 snmpExporter:

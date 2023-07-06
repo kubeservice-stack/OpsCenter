@@ -1687,6 +1687,7 @@ cilium:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c020719 (sync metrics/values.yaml)
 =======
@@ -1695,6 +1696,9 @@ cilium:
 =======
 =======
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 ## dcgmeEporter
 dcgmeEporter:
   enabled: true
@@ -1712,6 +1716,7 @@ dcgm-exporter:
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
@@ -1722,10 +1727,15 @@ dcgm-exporter:
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 >>>>>>> c020719 (sync metrics/values.yaml)
+=======
+=======
+>>>>>>> 8d80f42 (sync metrics/values.yaml)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 ## snmpExporter
 snmpExporter:
   enabled: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1742,6 +1752,10 @@ snmpExporter:
 =======
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
 >>>>>>> 6713656 (1，add ipv4/ipv6 DualStack)
+=======
+=======
+>>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 ## dcgmeEporter
 dcgmeEporter:
   enabled: true
@@ -1757,12 +1771,16 @@ dcgm-exporter:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 6713656 (1，add ipv4/ipv6 DualStack)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 0a86836 (sync metrics/values.yaml)
@@ -1774,6 +1792,8 @@ dcgm-exporter:
 >>>>>>> c020719 (sync metrics/values.yaml)
 =======
 >>>>>>> 6713656 (1，add ipv4/ipv6 DualStack)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 ## eBPFExporter
 eBPFExporter:
   enabled: true
@@ -1811,14 +1831,18 @@ prometheus-snmp-exporter:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> b8cbf74 (dongjiang, add dualStack)
 =======
 >>>>>>> c020719 (sync metrics/values.yaml)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 
 =======
     
 >>>>>>> 6d298c6 (dongjiang, add dualStack)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1837,6 +1861,11 @@ prometheus-snmp-exporter:
 
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 >>>>>>> c020719 (sync metrics/values.yaml)
+=======
+=======
+
+>>>>>>> 8d80f42 (sync metrics/values.yaml)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:

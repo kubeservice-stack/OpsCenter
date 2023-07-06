@@ -19,14 +19,18 @@ image:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7664fe5 (add dcgm-exporter)
 =======
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
   repository: yogiseven/dcgm-exporter
 =======
   repository: nvcr.io/nvidia/k8s/dcgm-exporter
 >>>>>>> c3ca160 (add dcgm-exporter)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -45,6 +49,11 @@ image:
   repository: yogiseven/dcgm-exporter
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+  repository: yogiseven/dcgm-exporter
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
   pullPolicy: IfNotPresent
   # Image tag defaults to AppVersion, but you can use the tag key
   # for the image tag, e.g:

@@ -15,6 +15,7 @@ metadata:
 spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
@@ -22,6 +23,9 @@ spec:
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 >>>>>>> 327df78 (update metrics/charts/prometheus-pingmesh-exporter/templates/service.yaml)
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

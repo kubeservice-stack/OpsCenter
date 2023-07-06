@@ -5,14 +5,18 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7664fe5 (add dcgm-exporter)
 =======
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 1， 配置使用nvidia runtime
 =======
 
 >>>>>>> c3ca160 (add dcgm-exporter)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -31,6 +35,11 @@
 1， 配置使用nvidia runtime
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+1， 配置使用nvidia runtime
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 #use docker
 /etc/docker/daemon.json
 
@@ -85,14 +94,18 @@ version = 2
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7664fe5 (add dcgm-exporter)
 =======
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 2, 部署
 =======
 
 >>>>>>> c3ca160 (add dcgm-exporter)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -111,6 +124,11 @@ version = 2
 2, 部署
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+2, 部署
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+>>>>>>> f6e4bebac24d7bcba8dc64c2859a923e46635dcb
 cd  dcgm-exporter/deployment
 
 kubectl create ns monitoing

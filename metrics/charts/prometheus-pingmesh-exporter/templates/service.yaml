@@ -13,7 +13,11 @@ metadata:
 {{ toYaml .Values.service.labels | indent 4 }}
 {{- end }}
 spec:
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+>>>>>>> b33dcce (dongjiang, add dualStack)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

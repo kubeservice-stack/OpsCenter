@@ -30,6 +30,7 @@ spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
@@ -37,10 +38,14 @@ spec:
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+>>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
 {{- end }}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> c3ca160 (add dcgm-exporter)
@@ -48,6 +53,8 @@ spec:
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 =======
 >>>>>>> fdfe4e2 (add dcgm-exporter)
+=======
+>>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
   type: {{ .Values.service.type }}
   ports:
   - name: "metrics"

@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 1， 配置使用nvidia runtime
 =======
 
@@ -12,6 +13,9 @@
 =======
 
 >>>>>>> fdfe4e2 (add dcgm-exporter)
+=======
+1， 配置使用nvidia runtime
+>>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
 #use docker
 /etc/docker/daemon.json
 
@@ -63,6 +67,7 @@ version = 2
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 2, 部署
 =======
 
@@ -73,6 +78,9 @@ version = 2
 =======
 
 >>>>>>> fdfe4e2 (add dcgm-exporter)
+=======
+2, 部署
+>>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
 cd  dcgm-exporter/deployment
 
 kubectl create ns monitoing

@@ -65,6 +65,7 @@ sources:
 type: application
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 version: 41.6.4
 =======
 version: 41.6.3
@@ -72,3 +73,6 @@ version: 41.6.3
 =======
 version: 41.6.4
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
+=======
+version: 41.6.3
+>>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)

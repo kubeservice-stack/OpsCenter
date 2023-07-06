@@ -14,10 +14,14 @@ metadata:
 {{- end }}
 spec:
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
 >>>>>>> b33dcce (dongjiang, add dualStack)
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
+>>>>>>> 327df78 (update metrics/charts/prometheus-pingmesh-exporter/templates/service.yaml)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

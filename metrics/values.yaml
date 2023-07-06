@@ -1706,6 +1706,9 @@ snmpExporter:
   enabled: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
 ## dcgmeEporter
 dcgmeEporter:
   enabled: true
@@ -1717,8 +1720,11 @@ dcgm-exporter:
     - IPv4
     ipFamilyPolicy: SingleStack
 
+<<<<<<< HEAD
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
+=======
+>>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
 ## eBPFExporter
 eBPFExporter:
   enabled: true

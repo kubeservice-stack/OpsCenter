@@ -28,10 +28,14 @@ metadata:
 spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
+>>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

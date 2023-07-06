@@ -64,7 +64,11 @@ sources:
 - https://github.com/prometheus-operator/kube-prometheus
 type: application
 <<<<<<< HEAD
+<<<<<<< HEAD
 version: 41.6.4
 =======
 version: 41.6.3
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+version: 41.6.4
+>>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)

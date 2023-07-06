@@ -1685,6 +1685,17 @@ cilium:
 snmpExporter:
   enabled: true
 
+## dcgmeEporter
+dcgmeEporter:
+  enabled: true
+
+dcgm-exporter:
+  namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+
 ## eBPFExporter
 eBPFExporter:
   enabled: true

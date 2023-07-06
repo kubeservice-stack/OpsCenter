@@ -26,7 +26,7 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+{{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

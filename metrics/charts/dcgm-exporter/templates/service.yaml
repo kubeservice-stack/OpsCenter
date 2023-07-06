@@ -29,6 +29,7 @@ spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
@@ -45,6 +46,8 @@ spec:
 >>>>>>> c3ca160 (add dcgm-exporter)
 =======
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> fdfe4e2 (add dcgm-exporter)
   type: {{ .Values.service.type }}
   ports:
   - name: "metrics"

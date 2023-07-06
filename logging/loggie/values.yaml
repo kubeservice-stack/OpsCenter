@@ -11,6 +11,7 @@ resources:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 extraArgs:
 =======
 extraArgs: 
@@ -24,6 +25,12 @@ extraArgs:
 =======
 extraArgs:
 >>>>>>> d561929 (update logging/loggie/values.yaml)
+=======
+extraArgs:
+=======
+extraArgs: 
+>>>>>>> 5d64a63 (update  logging/loggie/values.yaml)
+>>>>>>> a821d1e (update  logging/loggie/values.yaml)
   # log.level: debug
   log.jsonFormat: true
 

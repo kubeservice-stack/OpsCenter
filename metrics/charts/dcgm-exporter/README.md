@@ -3,10 +3,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7664fe5 (add dcgm-exporter)
 1， 配置使用nvidia runtime
 =======
 
 >>>>>>> c3ca160 (add dcgm-exporter)
+<<<<<<< HEAD
 =======
 1， 配置使用nvidia runtime
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
@@ -16,6 +20,8 @@
 =======
 1， 配置使用nvidia runtime
 >>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> 7664fe5 (add dcgm-exporter)
 #use docker
 /etc/docker/daemon.json
 
@@ -68,10 +74,14 @@ version = 2
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7664fe5 (add dcgm-exporter)
 2, 部署
 =======
 
 >>>>>>> c3ca160 (add dcgm-exporter)
+<<<<<<< HEAD
 =======
 2, 部署
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
@@ -81,6 +91,8 @@ version = 2
 =======
 2, 部署
 >>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+>>>>>>> 7664fe5 (add dcgm-exporter)
 cd  dcgm-exporter/deployment
 
 kubectl create ns monitoing

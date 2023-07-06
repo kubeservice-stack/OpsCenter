@@ -26,11 +26,14 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
 {{- end }}
+=======
+>>>>>>> c3ca160 (add dcgm-exporter)
   type: {{ .Values.service.type }}
   ports:
   - name: "metrics"

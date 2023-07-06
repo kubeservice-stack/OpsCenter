@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 1， 配置使用nvidia runtime
+=======
+
+>>>>>>> c3ca160 (add dcgm-exporter)
 #use docker
 /etc/docker/daemon.json
 
@@ -48,7 +52,11 @@ version = 2
             ShimCgroup = ""
             SystemdCgroup = false
 
+<<<<<<< HEAD
 2, 部署
+=======
+
+>>>>>>> c3ca160 (add dcgm-exporter)
 cd  dcgm-exporter/deployment
 
 kubectl create ns monitoing

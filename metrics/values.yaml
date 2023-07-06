@@ -1686,6 +1686,9 @@ cilium:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c020719 (sync metrics/values.yaml)
 =======
 =======
 >>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
@@ -1708,12 +1711,17 @@ dcgm-exporter:
       
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
 >>>>>>> 0a86836 (sync metrics/values.yaml)
 =======
 >>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+>>>>>>> 8d80f42 (sync metrics/values.yaml)
+>>>>>>> c020719 (sync metrics/values.yaml)
 ## snmpExporter
 snmpExporter:
   enabled: true
@@ -1722,10 +1730,13 @@ snmpExporter:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
 =======
 >>>>>>> 8564035 (1，add ipv4/ipv6 DualStack)
+=======
+>>>>>>> c020719 (sync metrics/values.yaml)
 ## dcgmeEporter
 dcgmeEporter:
   enabled: true
@@ -1739,6 +1750,7 @@ dcgm-exporter:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
@@ -1747,6 +1759,10 @@ dcgm-exporter:
 >>>>>>> 0a86836 (sync metrics/values.yaml)
 =======
 >>>>>>> 8564035 (1，add ipv4/ipv6 DualStack)
+=======
+=======
+>>>>>>> 8d80f42 (sync metrics/values.yaml)
+>>>>>>> c020719 (sync metrics/values.yaml)
 ## eBPFExporter
 eBPFExporter:
   enabled: true
@@ -1783,12 +1799,16 @@ prometheus-snmp-exporter:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> b8cbf74 (dongjiang, add dualStack)
+=======
+>>>>>>> c020719 (sync metrics/values.yaml)
 
 =======
     
 >>>>>>> 6d298c6 (dongjiang, add dualStack)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -1801,6 +1821,11 @@ prometheus-snmp-exporter:
 >>>>>>> 0a86836 (sync metrics/values.yaml)
 =======
 >>>>>>> b8cbf74 (dongjiang, add dualStack)
+=======
+=======
+
+>>>>>>> 8d80f42 (sync metrics/values.yaml)
+>>>>>>> c020719 (sync metrics/values.yaml)
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:

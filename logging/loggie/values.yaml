@@ -8,7 +8,11 @@ resources:
     cpu: 100m
     memory: 100Mi
 
+<<<<<<< HEAD
 extraArgs:
+=======
+extraArgs: 
+>>>>>>> 5d64a63 (update  logging/loggie/values.yaml)
   # log.level: debug
   log.jsonFormat: true
 

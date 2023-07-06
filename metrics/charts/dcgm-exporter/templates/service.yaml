@@ -27,13 +27,20 @@ metadata:
   {{- end }}
 spec:
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
+=======
+{{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
 {{- end }}
+<<<<<<< HEAD
 =======
 >>>>>>> c3ca160 (add dcgm-exporter)
+=======
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
   type: {{ .Values.service.type }}
   ports:
   - name: "metrics"

@@ -1685,9 +1685,13 @@ cilium:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
+=======
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
 ## dcgmeEporter
 dcgmeEporter:
   enabled: true
@@ -1703,10 +1707,13 @@ dcgm-exporter:
 
       
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+<<<<<<< HEAD
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
 >>>>>>> 0a86836 (sync metrics/values.yaml)
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
 ## snmpExporter
 snmpExporter:
   enabled: true

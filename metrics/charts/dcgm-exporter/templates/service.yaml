@@ -33,12 +33,16 @@ spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7664fe5 (add dcgm-exporter)
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor|int) 20 }}
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+<<<<<<< HEAD
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
@@ -48,6 +52,8 @@ spec:
 =======
 {{- if ge (.Capabilities.KubeVersion.Minor | int) 20 }}
 >>>>>>> 8564035 (1，add ipv4/ipv6 DualStack)
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
   ipFamilies:
 {{ toYaml .Values.service.ipFamilies | indent 2 }}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
@@ -55,10 +61,14 @@ spec:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
 =======
 >>>>>>> c3ca160 (add dcgm-exporter)
 =======
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
+<<<<<<< HEAD
 =======
 >>>>>>> fdfe4e2 (add dcgm-exporter)
 =======
@@ -67,6 +77,8 @@ spec:
 =======
 >>>>>>> c3ca160 (add dcgm-exporter)
 >>>>>>> 7664fe5 (add dcgm-exporter)
+=======
+>>>>>>> 952776d (Signed-off-by: yogiseven <seventhyou@126.com>)
   type: {{ .Values.service.type }}
   ports:
   - name: "metrics"

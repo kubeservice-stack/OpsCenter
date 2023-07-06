@@ -1681,6 +1681,23 @@ calico:
 cilium:
   enabled: false
 
+<<<<<<< HEAD
+=======
+## dcgmeEporter
+dcgmeEporter:
+  enabled: true
+
+## Configuration for dcgm-exporter subchart
+##
+dcgm-exporter:
+  namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+
+      
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 ## snmpExporter
 snmpExporter:
   enabled: true

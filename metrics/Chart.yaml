@@ -63,4 +63,8 @@ sources:
 - https://github.com/prometheus-community/helm-charts
 - https://github.com/prometheus-operator/kube-prometheus
 type: application
+<<<<<<< HEAD
 version: 41.6.4
+=======
+version: 41.6.3
+>>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)

@@ -13,10 +13,13 @@ resources:
 extraArgs:
 =======
 extraArgs: 
+<<<<<<< HEAD
 >>>>>>> 5d64a63 (update  logging/loggie/values.yaml)
 =======
 extraArgs:
 >>>>>>> b22bf93 (update logging/loggie/values.yaml)
+=======
+>>>>>>> dbd0963 (update  logging/loggie/values.yaml)
   # log.level: debug
   log.jsonFormat: true
 

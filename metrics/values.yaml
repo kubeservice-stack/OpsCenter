@@ -1684,6 +1684,7 @@ cilium:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> b4ae0b9 (Signed-off-by: yogiseven <seventhyou@126.com>)
@@ -1704,10 +1705,13 @@ dcgm-exporter:
 >>>>>>> 2ff402d (Signed-off-by: yogiseven <seventhyou@126.com>)
 =======
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
+=======
+>>>>>>> 0a86836 (sync metrics/values.yaml)
 ## snmpExporter
 snmpExporter:
   enabled: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1728,6 +1732,8 @@ dcgm-exporter:
 >>>>>>> 8d80f42 (sync metrics/values.yaml)
 =======
 >>>>>>> f1ffb16 (1，add ipv4/ipv6 DualStack)
+=======
+>>>>>>> 0a86836 (sync metrics/values.yaml)
 ## eBPFExporter
 eBPFExporter:
   enabled: true
@@ -1762,6 +1768,7 @@ prometheus-snmp-exporter:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
     
@@ -1772,6 +1779,9 @@ prometheus-snmp-exporter:
 =======
     
 >>>>>>> b33dcce (dongjiang, add dualStack)
+=======
+
+>>>>>>> 0a86836 (sync metrics/values.yaml)
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:

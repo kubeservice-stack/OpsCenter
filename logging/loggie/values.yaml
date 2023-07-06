@@ -9,10 +9,14 @@ resources:
     memory: 100Mi
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 extraArgs:
 =======
 extraArgs: 
 >>>>>>> 5d64a63 (update  logging/loggie/values.yaml)
+=======
+extraArgs:
+>>>>>>> b22bf93 (update logging/loggie/values.yaml)
   # log.level: debug
   log.jsonFormat: true
 

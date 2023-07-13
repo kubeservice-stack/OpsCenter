@@ -35,7 +35,7 @@ dependencies:
 - condition: dcgmeEporter.enabled
   name: dcgm-exporter
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
-  version: 3.1.5
+  version: 3.1.*
 description: kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards,
   and Prometheus rules combined with documentation and scripts to provide easy to
   operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus
@@ -67,4 +67,4 @@ sources:
 - https://github.com/prometheus-community/helm-charts
 - https://github.com/prometheus-operator/kube-prometheus
 type: application
-version: 41.6.3
+version: 41.6.4

@@ -47,6 +47,44 @@ Observability Stack 是基于云原生组件构建的OpsCenter系统。 包括
 ## 其他条件
 
 - kubelet、apiserver、scheduler 和 controller manager 开启metrics
+- 如需要开启GPU监控，需确认节点上有配置使用nvidia runtime
+
+docker需要配置：
+
+```bash
+/etc/docker/daemon.json
+
+{
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
+```
+
+containerd需要配置：
+
+```bash
+/etc/containerd/config.toml
+
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    BinaryName = "/usr/bin/nvidia-container-runtime"
+    CriuImagePath = ""
+    CriuPath = ""
+    CriuWorkPath = ""
+    IoGid = 0
+    IoUid = 0
+    NoNewKeyring = false
+    NoPivotRoot = false
+    Root = ""
+    ShimCgroup = ""
+    SystemdCgroup = false
+
+```
+
 
 ## 集群内部署
 

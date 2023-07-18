@@ -32,7 +32,7 @@ dependencies:
   name: grafana
   repository: https://grafana.github.io/helm-charts
   version: 6.43.*
-- condition: dcgmeEporter.enabled
+- condition: dcgmExporter.enabled
   name: dcgm-exporter
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
   version: 3.1.*

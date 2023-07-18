@@ -4,7 +4,7 @@ Do not change in-place! In order to change this file first read following link:
 https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/hack
 */ -}}
 {{- $kubeTargetVersion := default .Capabilities.KubeVersion.GitVersion .Values.kubeTargetVersionOverride }}
-{{- if and (or .Values.grafana.enabled .Values.grafana.forceDeployDashboards) (semverCompare ">=1.14.0-0" $kubeTargetVersion) (semverCompare "<9.9.9-9" $kubeTargetVersion) .Values.grafana.defaultDashboardsEnabled .Values.eBPFExporter.enabled}}
+{{- if and (or .Values.grafana.enabled .Values.grafana.forceDeployDashboards) (semverCompare ">=1.14.0-0" $kubeTargetVersion) (semverCompare "<9.9.9-9" $kubeTargetVersion) .Values.grafana.defaultDashboardsEnabled .Values.dcgmExporter.enabled}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -36,12 +36,22 @@ data:
     ]
   },
   "description": "This dashboard is to display the metrics from DCGM Exporter on a Kubernetes (1.13+) cluster",
-  "editable": true,
+  "editable": false,
   "gnetId": 12239,
   "graphTooltip": 0,
   "id": null,
   "iteration": 1588401887165,
-  "links": [],
+  "links": [
+        {
+          "$$hashKey": "object:2302",
+          "asDropdown": true,
+          "icon": "external link",
+          "tags": [],
+          "targetBlank": true,
+          "title": "",
+          "type": "dashboards"
+        }
+      ],
   "panels": [
     {
       "aliasColors": {},
@@ -89,7 +99,7 @@ data:
           "expr": "DCGM_FI_DEV_GPU_TEMP{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
           "instant": false,
           "interval": "",
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -241,7 +251,7 @@ data:
         {
           "expr": "DCGM_FI_DEV_POWER_USAGE{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
           "interval": "",
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -399,7 +409,7 @@ data:
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -490,7 +500,7 @@ data:
         {
           "expr": "DCGM_FI_DEV_GPU_UTIL{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
           "interval": "",
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -579,7 +589,7 @@ data:
         {
           "expr": "DCGM_FI_DEV_FB_USED{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
           "interval": "",
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -669,7 +679,7 @@ data:
         {
           "expr": "DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
           "interval": "",
-          "legendFormat": "GPU {{gpu}}",
+          "legendFormat": "GPU {{`{{`}}gpu{{`}}`}}",
           "refId": "A"
         }
       ],
@@ -787,7 +797,7 @@ data:
     ]
   },
   "timezone": "",
-  "title": "NVIDIA DCGM Exporter Dashboard",
+  "title": "Kubernetes / GPU Dashboard(NVIDIA)",
   "uid": "Oxed_c6Wz",
   "variables": {
     "list": []

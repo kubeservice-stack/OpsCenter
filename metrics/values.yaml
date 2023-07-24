@@ -1681,6 +1681,17 @@ calico:
 cilium:
   enabled: false
 
+dcgmExporter:
+  enabled: false
+
+dcgm-exporter:
+  namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+
+
 ## snmpExporter
 snmpExporter:
   enabled: true

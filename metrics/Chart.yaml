@@ -38,7 +38,7 @@ dependencies:
   version: 3.1.*
 - condition: karma.enabled
   name: karma
-  repository: https://github.com/wiremind/wiremind-helm-charts
+  repository: https://wiremind.github.io/wiremind-helm-charts
   version: 1.*.*
 description: kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards,
   and Prometheus rules combined with documentation and scripts to provide easy to

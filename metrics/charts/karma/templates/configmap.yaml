@@ -1,0 +1,19 @@
+{{ if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: "{{ template "karma.fullname" . }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: "{{ .Release.Service }}"
+    release: "{{ .Release.Name }}"
+{{- with .Values.configMap.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+  name: "{{ .Release.Name }}-config"
+  namespace: {{ template "karma.namespace" . }}
+data:
+  karma.conf: |
+{{ toYaml .Values.configMap.rawConfig | indent 4 }}
+{{- end }}

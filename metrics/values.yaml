@@ -714,6 +714,71 @@ alertmanager:
   #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
   #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
 
+## Using default values from https://github.com/kubeservice-stack/OpsCenter/blob/main/metrics/charts/karma/values.yaml
+karma:
+  enable: true
+  replicas: 1
+  namespaceOverride: "monitoring"
+  configMap:
+    enabled: true
+    rawConfig:
+      alertmanager:
+        interval: 60s
+        servers:
+          - name: local-cluster
+            uri: http://alertmanager-operated.monitoring:9093
+            timeout: 10s
+            proxy: true
+            readonly: false
+      annotations:
+        default:
+          hidden: false
+        hidden:
+          - help
+        visible: []
+      custom:
+        css: /custom.css
+        js: /custom.js
+      debug: false
+      filters:
+        default:
+          - "@receiver=by-cluster-service"
+      karma:
+        name: karma-prod
+      labels:
+        color:
+          static:
+            - job
+          unique:
+            - cluster
+            - instance
+            - "@receiver"
+        keep: []
+        strip: []
+      listen:
+        address: "0.0.0.0"
+        port: 8080
+        prefix: /
+      log:
+        config: false
+        level: info
+      receivers:
+        keep: []
+        strip: []
+      silenceForm:
+        strip:
+          labels:
+            - job
+        defaultAlertmanagers:
+          - local-cluster
+      ui:
+        refresh: 30s
+        hideFiltersWhenIdle: true
+        colorTitlebar: false
+        minimalGroupWidth: 420
+        alertsPerGroup: 5
+        collapseGroups: collapsedOnMobile
+
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 ##
 grafana:

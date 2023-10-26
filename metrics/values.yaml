@@ -779,6 +779,24 @@ karma:
         alertsPerGroup: 5
         collapseGroups: collapsedOnMobile
 
+## Using default values from https://github.com/kubeservice-stack/OpsCenter/blob/main/metrics/charts/prometheus-adpater/values.yaml
+##
+prometheus-adapter:
+  enabled: true
+  replicas: 2
+  namespaceOverride: "monitoring"
+
+  dnsConfig:
+    options:
+    - name: ndots
+      value: "2"
+
+  prometheus:
+    # Value is templated : http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}:{{ .Values.prometheus.service.port }}/{{ trimPrefix "/" .Values.prometheus.prometheusSpec.routePrefix }}
+    url: http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}/
+    port: 9090
+    path: ""
+
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 ##
 grafana:

@@ -783,7 +783,7 @@ karma:
 ##
 prometheus-adapter:
   enabled: true
-  replicas: 2
+  replicas: 1
   namespaceOverride: "monitoring"
 
   dnsConfig:
@@ -792,8 +792,7 @@ prometheus-adapter:
       value: "2"
 
   prometheus:
-    # Value is templated : http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}:{{ .Values.prometheus.service.port }}/{{ trimPrefix "/" .Values.prometheus.prometheusSpec.routePrefix }}
-    url: http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}/
+    url: http://metrics-kube-prometheus-st-prometheus.{{ template "kube-prometheus-stack.namespace" . }}
     port: 9090
     path: ""
 

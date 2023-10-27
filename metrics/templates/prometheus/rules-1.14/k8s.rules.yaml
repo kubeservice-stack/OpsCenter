@@ -170,4 +170,22 @@ spec:
       labels:
         workload_type: job
       record: namespace_workload_pod:kube_pod_owner:relabel
+    - record: pod:memory_usage_percentage:ratio
+      expr: |
+        sum by (pod, namespace) (
+          container_memory_working_set_bytes{cluster="",container!="",image!="",job="kubelet",metrics_path="/metrics/cadvisor",namespace!="",pod!=""}
+        )
+        /
+        sum by (pod, namespace) (
+          kube_pod_container_resource_limits{cluster="",job="kube-state-metrics",namespace!="",pod!="",resource="memory"}
+        ) * 100
+    - record: pod:cpu_usage_percentage:ratio
+      expr: |
+        sum by (pod, namespace) (
+          node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="",namespace!="",pod!=""}
+        )
+        /
+        sum by (pod, namespace) (
+          kube_pod_container_resource_limits{cluster="",job="kube-state-metrics",namespace!="",pod!="",resource="cpu"}
+        ) * 100
 {{- end }}

@@ -120,14 +120,20 @@ startupProbe: {}
 rules:
   default: true
 
-  custom: []
-    # - seriesQuery: '{__name__=~"^some_metric_count$"}'
-    #   resources:
-    #     template: <<.Resource>>
-    #   name:
-    #     matches: ""
-    #     as: "my_custom_metric"
-    #   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+  custom:
+    - seriesQuery: 'pod:memory_usage_percentage:ratio{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      metricsQuery: '<<.Series>>{<<.LabelMatchers>>} / 100'
+    
+    - seriesQuery: 'pod:cpu_usage_percentage:ratio{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      metricsQuery: '<<.Series>>{<<.LabelMatchers>>} / 100'
 
   # Mounts a configMap with pre-generated rules for use. Overrides the
   # default, custom, external and resource entries

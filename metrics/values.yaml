@@ -719,6 +719,10 @@ karma:
   enable: true
   replicas: 1
   namespaceOverride: "monitoring"
+  service:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
   configMap:
     enabled: true
     rawConfig:

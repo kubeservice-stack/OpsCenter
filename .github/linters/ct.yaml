@@ -13,7 +13,7 @@ chart-repos:
   - elastic=https://helm.elastic.co
   - bitnami=https://charts.bitnami.com/bitnami
   - hashicorp=https://helm.releases.hashicorp.com
-  - minio=https://charts.bitnami.com/bitnami
+  - minio=https://charts.min.io
 helm-extra-args: --timeout 600s
 validate-maintainers: false
 excluded-charts:

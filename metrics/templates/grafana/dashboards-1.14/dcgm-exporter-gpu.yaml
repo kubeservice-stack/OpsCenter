@@ -850,7 +850,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "dcgm-gpu",
+      "title": "Kubernetes / GPU Dashboard(NVIDIA)",
       "uid": "sy20231229",
       "version": 2,
       "weekStart": ""

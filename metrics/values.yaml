@@ -787,7 +787,11 @@ karma:
 ##
 prometheus-adapter:
   enabled: true
+<<<<<<< HEAD
   replicas: 1
+=======
+  replicas: 2
+>>>>>>> e7ba79d (dongjiang, add prometheus  adapter)
   namespaceOverride: "monitoring"
 
   dnsConfig:
@@ -796,7 +800,12 @@ prometheus-adapter:
       value: "2"
 
   prometheus:
+<<<<<<< HEAD
     url: http://metrics-kube-prometheus-st-prometheus.{{ template "kube-prometheus-stack.namespace" . }}
+=======
+    # Value is templated : http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}:{{ .Values.prometheus.service.port }}/{{ trimPrefix "/" .Values.prometheus.prometheusSpec.routePrefix }}
+    url: http://{{ template "kube-prometheus-stack.fullname" . }}-prometheus.{{ template "kube-prometheus-stack.namespace" . }}/
+>>>>>>> e7ba79d (dongjiang, add prometheus  adapter)
     port: 9090
     path: ""
 

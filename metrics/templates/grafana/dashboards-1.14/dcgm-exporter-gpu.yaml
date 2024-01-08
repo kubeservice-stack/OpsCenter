@@ -45,7 +45,7 @@ data:
         ]
       },
       "description": "This dashboard is to display the metrics from DCGM Exporter on a Kubernetes (1.13+) cluster",
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "gnetId": 12239,
       "graphTooltip": 0,

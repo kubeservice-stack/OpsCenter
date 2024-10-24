@@ -76,7 +76,7 @@ spec:
       {{- toYaml . | nindent 6 }}
       {{- end }}
       containers:
-      - name: exporter
+      - name: dcgm-exporter
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
         {{- if .Values.image.tag }}

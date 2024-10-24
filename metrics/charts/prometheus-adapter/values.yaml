@@ -48,7 +48,7 @@ podSecurityContext:
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
-    drop: ["all"]
+    drop: ["ALL"]
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 10001
@@ -58,10 +58,24 @@ securityContext:
 rbac:
   # Specifies whether RBAC resources should be created
   create: true
+  # Specifies if a Cluster Role should be used for the Auth Reader
+  useAuthReaderClusterRole: false
+  externalMetrics:
+    resources: ["*"]
+  customMetrics:
+    resources: ["*"]
 
 psp:
   # Specifies whether PSP resources should be created
   create: false
+  # Annotations added to the pod security policy
+  annotations: {}
+  ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
+  ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#seccomp
+  ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#sysctl
+
+# If false then the user will opt out of automounting API credentials.
+automountServiceAccountToken: true
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -73,6 +87,8 @@ serviceAccount:
   # Use case: AWS EKS IAM roles for service accounts
   # ref: https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html
   annotations: {}
+  # If false then the user will opt out of automounting API credentials.
+  automountServiceAccountToken: true
 
 # Custom DNS configuration to be added to prometheus-adapter pods
 dnsConfig: {}
@@ -120,20 +136,14 @@ startupProbe: {}
 rules:
   default: true
 
-  custom:
-    - seriesQuery: 'pod:memory_usage_percentage:ratio{namespace!="",pod!=""}'
-      resources:
-        overrides:
-          namespace: {resource: "namespace"}
-          pod: {resource: "pod"}
-      metricsQuery: '<<.Series>>{<<.LabelMatchers>>} / 100'
-    
-    - seriesQuery: 'pod:cpu_usage_percentage:ratio{namespace!="",pod!=""}'
-      resources:
-        overrides:
-          namespace: {resource: "namespace"}
-          pod: {resource: "pod"}
-      metricsQuery: '<<.Series>>{<<.LabelMatchers>>} / 100'
+  custom: []
+    # - seriesQuery: '{__name__=~"^some_metric_count$"}'
+    #   resources:
+    #     template: <<.Resource>>
+    #   name:
+    #     matches: ""
+    #     as: "my_custom_metric"
+    #   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
 
   # Mounts a configMap with pre-generated rules for use. Overrides the
   # default, custom, external and resource entries
